@@ -1,22 +1,6 @@
-/.settings/
-/target/
- 
-# built application files
-*.apk
-*.ap_
- 
-# files for the dex VM
-*.dex
- 
-# Java class files
-*.class
-*.jar
- 
-# generated files
+.class
+.git/
 bin/
-gen/
- 
-# Eclipse project files
-.classpath
+.settings/
 .project
-.DS_Store
+.classpath

@@ -6,10 +6,5 @@
 			<accessrule kind="accessible" pattern="javafx/**"/>
 		</accessrules>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Program Files/Java/jdk1.8.0_291/jre/lib/jmetro-11.6.15.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:file:/C:/Program%20Files/Java/jdk1.8.0_291/jre/lib/jmetro-11.6.15-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
