@@ -73,6 +73,7 @@ public class Gui extends Application {
 				this.setSpacing(20);
 				this.setPadding(new Insets(5, 5, 5, 5));
 				Button showCondition=new Button();
+				showCondition.setDisable(true);
 				Label showName=new Label(currentServer.serverName);
 				showName.setMaxWidth(Double.MAX_VALUE);
 				VBox.setVgrow(showName, Priority.ALWAYS);
@@ -85,6 +86,13 @@ public class Gui extends Application {
 			super();
 			VBox serverList=new VBox();
 //			this.setStyle("-fx-background-color:#FFFFFF");//调试用-显示范围
+			serverList.setStyle("-fx-text-fill:#000000;"
+				+ "-fx-background-color: rgba(255, 255, 255, .8);"
+				+ "-fx-border-color: #000000;"
+				+ "-fx-border-radius: 5px;"
+				+ "-fx-background-radius: 5px;"
+				+ "-fx-font-size: 15px;");
+			serverList.setSpacing(2);
 			this.setPadding(new Insets(5, 5, 5, 5));
 			this.getChildren().add(serverList);
 			this.prefHeightProperty().bind(page.heightProperty());
@@ -98,6 +106,14 @@ public class Gui extends Application {
 			Server bServer=new Server("Server2");
 			serverList.getChildren().add(new ServerView(aServer));
 			serverList.getChildren().add(new ServerView(bServer));
+
+			Button newServer=new Button();
+			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
+			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resouse/pic/new.png",50,50,false,true)));
+			this.getChildren().add(newServer);
+			AnchorPane.setBottomAnchor(newServer, 30.0);
+			AnchorPane.setRightAnchor(newServer, 30.0);
+			
 		}
 	}
 	
@@ -145,7 +161,7 @@ public class Gui extends Application {
 		
 		
 		
-//		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resouse/pic/background2.png",810,490,false,true),
+//		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resouse/pic/background2.png",810,490,false,false),
 //		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 //		          BackgroundSize.DEFAULT);
 //		//then you set to your node
@@ -275,11 +291,10 @@ public class Gui extends Application {
 		AnchorPane backgroundPane=new AnchorPane();
 		Label backgroundLabel=new Label();
 		ImageView backgroundImageView=new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resouse/pic/background1.png")));
-
-		
 		backgroundImageView.fitHeightProperty().bind(pane.widthProperty());
 		backgroundImageView.fitWidthProperty().bind(pane.widthProperty());
 		backgroundLabel.setGraphic(backgroundImageView);
+		//背景实现
 		
 		backgroundPane.getChildren().add(backgroundLabel);
 		AnchorPane.setTopAnchor(backgroundLabel, (double) 0);
