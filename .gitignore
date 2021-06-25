@@ -2,5 +2,10 @@
 .git/
 bin/
 .settings/
+META-INF/
 .project
 .classpath
+.MF
+.iml
+.project/
+.classpath/

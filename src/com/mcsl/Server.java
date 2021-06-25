@@ -20,13 +20,7 @@ public class Server {
 	Properties serverSettings, serverOptions;
 
 	public Server(String theName) {
-		this.serverName = theName;
-		try {
-			Util.system("cmd");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+		serverName=theName;
 	}
 
 }

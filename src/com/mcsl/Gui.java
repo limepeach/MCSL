@@ -25,24 +25,24 @@ public class Gui extends Application {
 		Application.launch(args);
 	}
 
-	
+
 	Pane page=new Pane();
 	BorderPane pane = new BorderPane();
 	String pageNow;
-	
-	
-	
+
+
+
 	public class StartPage extends AnchorPane{
 		public StartPage() {
 			super();
 			this.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
 			Label startPageInfo=new Label(
-					  "	µ±Ç°°æ±¾Îª0.0.0.1\r\n"
-					+ "	Ä¿Ç°MCSLÈÎÈ»´¦ÓÚÄÚ²âÖĞ\r\n"
-					+ "	¹¦ÄÜ²»ÉõÍêÉÆ\r\n"
-					+ "	ÓĞÊ²Ã´½¨Òé»¶Ó­Ìí¼Ó½»Á÷Èº\r\n"
-					+ "	ÈººÅ£º857934957\r\n"
-					+ "	¸ĞĞ»¸÷Î»ÔŞÖúÕßÃÇ£¡\r\n");
+					"	å½“å‰ç‰ˆæœ¬ä¸º0.0.0.1\r\n"
+							+ "	ç›®å‰MCSLä»»ç„¶å¤„äºå†…æµ‹ä¸­\r\n"
+							+ "	åŠŸèƒ½ä¸ç”šå®Œå–„\r\n"
+							+ "	æœ‰ä»€ä¹ˆå»ºè®®æ¬¢è¿æ·»åŠ äº¤æµç¾¤\r\n"
+							+ "	ç¾¤å·ï¼š857934957\r\n"
+							+ "	æ„Ÿè°¢å„ä½èµåŠ©è€…ä»¬ï¼\r\n");
 			startPageInfo.setStyle("-fx-text-fill:#000000;"
 					+ "-fx-background-color: rgba(255, 255, 255, .8);"
 					+ "-fx-border-color: #000000;"
@@ -56,20 +56,20 @@ public class Gui extends Application {
 			AnchorPane.setTopAnchor(startPageInfo,40.0);
 			AnchorPane.setLeftAnchor(startPageInfo, 40.0);
 			AnchorPane.setRightAnchor(startPageInfo, 40.0);
-			
+
 		}
 	}
-	
+
 	public class ManagePage extends AnchorPane{
 		class ServerView extends HBox{
 			public ServerView(Server currentServer) {
 				super(50);
 				this.setStyle("-fx-text-fill:#000000;"
-					+ "-fx-background-color: rgba(255, 255, 255, .8);"
-					+ "-fx-border-color: #000000;"
-					+ "-fx-border-radius: 5px;"
-					+ "-fx-background-radius: 5px;"
-					+ "-fx-font-size: 15px;");
+						+ "-fx-background-color: rgba(255, 255, 255, .8);"
+						+ "-fx-border-color: #000000;"
+						+ "-fx-border-radius: 5px;"
+						+ "-fx-background-radius: 5px;"
+						+ "-fx-font-size: 15px;");
 				this.setSpacing(20);
 				this.setPadding(new Insets(5, 5, 5, 5));
 				Button showCondition=new Button();
@@ -85,13 +85,13 @@ public class Gui extends Application {
 		public ManagePage() {
 			super();
 			VBox serverList=new VBox();
-//			this.setStyle("-fx-background-color:#FFFFFF");//µ÷ÊÔÓÃ-ÏÔÊ¾·¶Î§
+//			this.setStyle("-fx-background-color:#FFFFFF");//è°ƒè¯•ç”¨-æ˜¾ç¤ºèŒƒå›´
 			serverList.setStyle("-fx-text-fill:#000000;"
-				+ "-fx-background-color: rgba(255, 255, 255, .8);"
-				+ "-fx-border-color: #000000;"
-				+ "-fx-border-radius: 5px;"
-				+ "-fx-background-radius: 5px;"
-				+ "-fx-font-size: 15px;");
+					+ "-fx-background-color: rgba(255, 255, 255, .8);"
+					+ "-fx-border-color: #000000;"
+					+ "-fx-border-radius: 5px;"
+					+ "-fx-background-radius: 5px;"
+					+ "-fx-font-size: 15px;");
 			serverList.setSpacing(2);
 			this.setPadding(new Insets(5, 5, 5, 5));
 			this.getChildren().add(serverList);
@@ -113,10 +113,10 @@ public class Gui extends Application {
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
-			
+
 		}
 	}
-	
+
 	public void setButtonType(Button menuButton, boolean type) {
 		menuButton.setDisable(type);
 		menuButton.setStyle("-fx-opacity: 1;");
@@ -127,25 +127,25 @@ public class Gui extends Application {
 
 //		VBox root = new VBox();
 //        root.setId("root");
-//        // ÒıÈëÑùÊ½
+//        // å¼•å…¥æ ·å¼
 //        root.getStylesheets().add(Gui.class.getResource("/mcsl/bin/com/mcsl/resource/css/style.css").toString());
-//        
 //
-//        //¶¥²¿
+//
+//        //é¡¶éƒ¨
 //        VBox top = new VBox();
 //        top.setId("top");
 //        top.setPrefSize(300,26);
-//        // ±êÌâÀ¸
+//        // æ ‡é¢˜æ 
 //        AnchorPane title = new AnchorPane();
 //        Label close = new Label();
 //        close.setPrefWidth(33);
 //        close.setPrefHeight(26);
-//        close.setId("winClose");//winClose cssÑùÊ½Id
+//        close.setId("winClose");//winClose cssæ ·å¼Id
 //        title.getChildren().add(close);
 //        AnchorPane.setRightAnchor(close, 0.0);
 //        AnchorPane.setTopAnchor(close, 5.0);
 //        top.getChildren().add(title);
-		
+
 
 		primaryStage.getIcons().add(new Image(Gui.class.getResourceAsStream("/com/mcsl/resouse/pic/ico.png")));
 		primaryStage.setTitle("MCSL");
@@ -153,20 +153,20 @@ public class Gui extends Application {
 		primaryStage.setHeight(490);
 		primaryStage.setMinWidth(810);
 		primaryStage.setMinHeight(490);
-		
-		
+
+
 		pane.setId("biggest_pane");
-		pane.setPadding(new Insets(0, 0, 0, 0));// ÏÂ×óÉÏÓÒ
-		pane.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");// ±³¾°
-		
-		
-		
+		pane.setPadding(new Insets(0, 0, 0, 0));// ä¸‹å·¦ä¸Šå³
+		pane.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");// èƒŒæ™¯
+
+
+
 //		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resouse/pic/background2.png",810,490,false,false),
 //		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 //		          BackgroundSize.DEFAULT);
 //		//then you set to your node
 //		pane.setBackground(new Background(myBI));
-//		//ÀÏµÄ±³¾°ÊµÏÖ
+//		//è€çš„èƒŒæ™¯å®ç°
 
 		Image start_unselected = new Image("/com/mcsl/resouse/pic/start_unselected.png");
 		Image start_selected = new Image("/com/mcsl/resouse/pic/start_selected.png");
@@ -176,7 +176,7 @@ public class Gui extends Application {
 		Image run_selected = new Image("/com/mcsl/resouse/pic/run_selected.png");
 		Image manage_unselected = new Image("/com/mcsl/resouse/pic/manage_unselected.png");
 		Image manage_selected = new Image("/com/mcsl/resouse/pic/manage_selected.png");
-		//¼ÓÔØ²Ëµ¥°´Å¥Í¼Æ¬×ÊÔ´
+		//åŠ è½½èœå•æŒ‰é’®å›¾ç‰‡èµ„æº
 		Button menuButton_Start = new Button("");
 		Button menuButton_Manage = new Button("");
 		Button menuButton_Run = new Button("");
@@ -185,16 +185,16 @@ public class Gui extends Application {
 		menuButton_Manage.setGraphic(new ImageView(manage_unselected));
 		menuButton_Run.setGraphic(new ImageView(run_unselected));
 		menuButton_Settings.setGraphic(new ImageView(settings_unselected));
-		//ÉèÖÃ°´Å¥
+		//è®¾ç½®æŒ‰é’®
 		menuButton_Start.setId("menu");
 		menuButton_Manage.setId("menu");
 		menuButton_Run.setId("menu");
 		menuButton_Settings.setId("menu");
-		// ¼ÓÔØÄ¬ÈÏÑùÊ½
-		
+		// åŠ è½½é»˜è®¤æ ·å¼
+
 		page.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
-		//ÉèÖÃ±³¾°Í¸Ã÷
-		
+		//è®¾ç½®èƒŒæ™¯é€æ˜
+
 		pageNow = "Start";
 		setButtonType(menuButton_Start, true);
 		menuButton_Start.setGraphic(new ImageView(start_selected));
@@ -221,7 +221,7 @@ public class Gui extends Application {
 				pageNow = "Start";
 				page.getChildren().clear();
 				page.getChildren().add(new StartPage());
-				
+
 			}
 		});
 		menuButton_Manage.setOnAction(new EventHandler<ActionEvent>() {
@@ -285,7 +285,7 @@ public class Gui extends Application {
 		HBox.setHgrow(menuButton_Manage, Priority.ALWAYS);
 		HBox.setHgrow(menuButton_Run, Priority.ALWAYS);
 		HBox.setHgrow(menuButton_Settings, Priority.ALWAYS);
-		
+
 
 
 		AnchorPane backgroundPane=new AnchorPane();
@@ -294,8 +294,8 @@ public class Gui extends Application {
 		backgroundImageView.fitHeightProperty().bind(pane.widthProperty());
 		backgroundImageView.fitWidthProperty().bind(pane.widthProperty());
 		backgroundLabel.setGraphic(backgroundImageView);
-		//±³¾°ÊµÏÖ
-		
+		//èƒŒæ™¯å®ç°
+
 		backgroundPane.getChildren().add(backgroundLabel);
 		AnchorPane.setTopAnchor(backgroundLabel, (double) 0);
 		AnchorPane.setLeftAnchor(backgroundLabel, (double) 0);
@@ -306,7 +306,7 @@ public class Gui extends Application {
 		AnchorPane.setLeftAnchor(pane, (double) 0);
 		AnchorPane.setRightAnchor(pane, (double) 0);
 		AnchorPane.setBottomAnchor(pane, (double) 0);
-		
+
 		pane.setBottom(menuBox);
 		pane.setCenter(page);
 		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resouse/css/style.css").toString());
