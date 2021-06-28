@@ -26,17 +26,16 @@ public class Gui extends Application {
 	}
 
 
-	Pane page=new Pane();
+	Pane page = new Pane();
 	BorderPane pane = new BorderPane();
 	String pageNow;
 
 
-
-	public class StartPage extends AnchorPane{
+	public class StartPage extends AnchorPane {
 		public StartPage() {
 			super();
 			this.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
-			Label startPageInfo=new Label(
+			Label startPageInfo = new Label(
 					"	当前版本为0.0.0.1\r\n"
 							+ "	目前MCSL任然处于内测中\r\n"
 							+ "	功能不甚完善\r\n"
@@ -53,15 +52,15 @@ public class Gui extends Application {
 					+ "-fx-pref-height: 200px;"
 					+ "-fx-padding: 6 6 6 6;");
 			this.getChildren().add(startPageInfo);
-			AnchorPane.setTopAnchor(startPageInfo,40.0);
+			AnchorPane.setTopAnchor(startPageInfo, 40.0);
 			AnchorPane.setLeftAnchor(startPageInfo, 40.0);
 			AnchorPane.setRightAnchor(startPageInfo, 40.0);
 
 		}
 	}
 
-	public class ManagePage extends AnchorPane{
-		class ServerView extends HBox{
+	public class ManagePage extends AnchorPane {
+		class ServerView extends HBox {
 			public ServerView(Server currentServer) {
 				super(50);
 				this.setStyle("-fx-text-fill:#000000;"
@@ -72,44 +71,45 @@ public class Gui extends Application {
 						+ "-fx-font-size: 15px;");
 				this.setSpacing(20);
 				this.setPadding(new Insets(5, 5, 5, 5));
-				Button showCondition=new Button();
+				Button showCondition = new Button();
 				showCondition.setDisable(true);
-				Label showName=new Label(currentServer.serverName);
+				Label showName = new Label(currentServer.getServerName());
 				showName.setMaxWidth(Double.MAX_VALUE);
 				VBox.setVgrow(showName, Priority.ALWAYS);
-				Button settingsButton=new Button();
-				this.getChildren().addAll(showCondition,showName,settingsButton);
+				Button settingsButton = new Button();
+				this.getChildren().addAll(showCondition, showName, settingsButton);
 				this.prefWidthProperty().bind(page.widthProperty());
 			}
 		}
+
 		public ManagePage() {
 			super();
-			VBox serverList=new VBox();
+			VBox serverListView = new VBox();
 //			this.setStyle("-fx-background-color:#FFFFFF");//调试用-显示范围
-			serverList.setStyle("-fx-text-fill:#000000;"
+			serverListView.setStyle("-fx-text-fill:#000000;"
 					+ "-fx-background-color: rgba(255, 255, 255, .8);"
 					+ "-fx-border-color: #000000;"
 					+ "-fx-border-radius: 5px;"
 					+ "-fx-background-radius: 5px;"
 					+ "-fx-font-size: 15px;");
-			serverList.setSpacing(2);
+			serverListView.setSpacing(2);
 			this.setPadding(new Insets(5, 5, 5, 5));
-			this.getChildren().add(serverList);
+			this.getChildren().add(serverListView);
 			this.prefHeightProperty().bind(page.heightProperty());
 			this.prefWidthProperty().bind(page.widthProperty());
-			AnchorPane.setTopAnchor(serverList,null);
-			AnchorPane.setLeftAnchor(serverList, null);
-			AnchorPane.setBottomAnchor(serverList, null);
-			AnchorPane.setRightAnchor(serverList, null);
-			serverList.setPadding(new Insets(0));
-			Server aServer=new Server("Server1");
-			Server bServer=new Server("Server2");
-			serverList.getChildren().add(new ServerView(aServer));
-			serverList.getChildren().add(new ServerView(bServer));
+			AnchorPane.setTopAnchor(serverListView, null);
+			AnchorPane.setLeftAnchor(serverListView, null);
+			AnchorPane.setBottomAnchor(serverListView, null);
+			AnchorPane.setRightAnchor(serverListView, null);
+			serverListView.setPadding(new Insets(0));
+			Server aServer = new Server("Server1");
+			Server bServer = new Server("Server2");
+			serverListView.getChildren().add(new ServerView(aServer));
+			serverListView.getChildren().add(new ServerView(bServer));
 
-			Button newServer=new Button();
+			Button newServer = new Button();
 			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
-			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resouse/pic/new.png",50,50,false,true)));
+			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resouse/pic/new.png", 50, 50, false, true)));
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
@@ -158,7 +158,6 @@ public class Gui extends Application {
 		pane.setId("biggest_pane");
 		pane.setPadding(new Insets(0, 0, 0, 0));// 下左上右
 		pane.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");// 背景
-
 
 
 //		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resouse/pic/background2.png",810,490,false,false),
@@ -287,10 +286,9 @@ public class Gui extends Application {
 		HBox.setHgrow(menuButton_Settings, Priority.ALWAYS);
 
 
-
-		AnchorPane backgroundPane=new AnchorPane();
-		Label backgroundLabel=new Label();
-		ImageView backgroundImageView=new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resouse/pic/background1.png")));
+		AnchorPane backgroundPane = new AnchorPane();
+		Label backgroundLabel = new Label();
+		ImageView backgroundImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resouse/pic/background1.png")));
 		backgroundImageView.fitHeightProperty().bind(pane.widthProperty());
 		backgroundImageView.fitWidthProperty().bind(pane.widthProperty());
 		backgroundLabel.setGraphic(backgroundImageView);
