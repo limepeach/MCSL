@@ -9,10 +9,13 @@ import javax.swing.*;
 
 public class Server {
 	private String serverName;
+
 	private ServerType_String serverType_String;
-	private String serverVersion;
-	private String serverCondition;
 	private ServerType_Int serverType_Int;
+
+	private String serverVersion;
+
+	private String serverCondition;
 	
 	boolean enablePluginForMCDR,enablePluginForBucket,enableModForForge,enableModForFabric;
 
@@ -23,7 +26,7 @@ public class Server {
 
 	private Properties serverSettings, serverOptions;
 
-	public static ArrayList<Server> serverList=new ArrayList<Server>();
+	public static ArrayList<Server> serverList=new ArrayList<>();
 
 	public Server(String theName) {
 		serverName=theName;
@@ -35,6 +38,8 @@ public class Server {
 	public String getServerName(){
 		return serverName;
 	}
+
+
 
 	public enum ServerType_Int{
 		VANILLA(1),
@@ -126,4 +131,19 @@ public class Server {
 		serverType_Int=stringToInt(serverType1);
 	}
 
+
+	public void setServerVersion(String serverVersion) {
+		this.serverVersion = serverVersion;
+	}
+	public String getServerVersion() {
+		return serverVersion;
+	}
+
+
+	public void setJavaEnvPath(String javaEnvPath) {
+		this.javaEnvPath = javaEnvPath;
+	}
+	public String getJavaEnvPath() {
+		return javaEnvPath;
+	}
 }
