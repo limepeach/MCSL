@@ -1,5 +1,8 @@
 package com.mcsl;
 
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+
 import java.util.*;
 import java.awt.*;
 import java.io.File;
@@ -15,9 +18,12 @@ public class Server {
 
 	private String serverVersion;
 
-	private String serverCondition;
-	
+	private ServerConditionType serverCondition=ServerConditionType.READY;
+	public ImageView serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/ready.png", 40, 40, false, true));
+
 	boolean enablePluginForMCDR,enablePluginForBucket,enableModForForge,enableModForFabric;
+
+	private String MCDRPath,forgePath,FabricPath;
 
 	private String javaEnvPath,pythonEnvPath;
 
@@ -27,6 +33,7 @@ public class Server {
 	private Properties serverSettings, serverOptions;
 
 	public static ArrayList<Server> serverList=new ArrayList<>();
+	public static ArrayList<Server> runningServerList=new ArrayList<>();
 
 	public Server(String theName) {
 		serverName=theName;
@@ -130,6 +137,12 @@ public class Server {
 		serverType_String=serverType1;
 		serverType_Int=stringToInt(serverType1);
 	}
+	public ServerType_Int getServerType_Int() {
+		return serverType_Int;
+	}
+	public ServerType_String getServerType_String() {
+		return serverType_String;
+	}
 
 
 	public void setServerVersion(String serverVersion) {
@@ -139,11 +152,48 @@ public class Server {
 		return serverVersion;
 	}
 
-
 	public void setJavaEnvPath(String javaEnvPath) {
 		this.javaEnvPath = javaEnvPath;
 	}
 	public String getJavaEnvPath() {
 		return javaEnvPath;
+	}
+
+
+	public enum ServerConditionType{
+		READY(1),
+		LOADING(2),
+		DOWNLOADING(3),
+		INSTALLING(4),
+		RUNNING(5);
+
+		private int theType;
+		ServerConditionType(int inputInt){
+			this.theType=inputInt;
+		}
+	}
+
+	public void setServerCondition(ServerConditionType serverCondition) {
+		this.serverCondition = serverCondition;
+		switch (this.serverCondition){
+			case READY:
+				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/ready.png", 40, 40, false, true));
+				break;
+			case LOADING:
+				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/loading.git", 40, 40, false, true));
+				break;
+			case DOWNLOADING:
+				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/downloading.png", 40, 40, false, true));
+				break;
+			case INSTALLING:
+				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/installing.gif", 40, 40, false, true));
+				break;
+			case RUNNING:
+				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/running.png", 40, 40, false, true));
+				break;
+		}
+	}
+	public ServerConditionType getServerCondition() {
+		return serverCondition;
 	}
 }

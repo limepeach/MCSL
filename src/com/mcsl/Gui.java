@@ -1,23 +1,15 @@
 package com.mcsl;
 
-import java.security.SecurityPermission;
-
 //import jfxtras.styles.jmetro.JMetro;
 //import jfxtras.styles.jmetro.Style;
 //import jfxtras.styles.jmetro.Style.*;
-import javafx.application.*;
 import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.*;
-import javafx.scene.shape.*;
-import javafx.stage.*;
+		import javafx.scene.layout.*;
+		import javafx.stage.*;
 import javafx.event.*;
 
 public class Gui extends Application {
@@ -75,6 +67,7 @@ public class Gui extends Application {
 				showCondition.setDisable(true);
 				Label showName = new Label(currentServer.getServerName());
 				showName.setMaxWidth(Double.MAX_VALUE);
+				showName.prefWidthProperty().bind(page.widthProperty());
 				VBox.setVgrow(showName, Priority.ALWAYS);
 				Button settingsButton = new Button();
 				this.getChildren().addAll(showCondition, showName, settingsButton);
@@ -102,14 +95,11 @@ public class Gui extends Application {
 			AnchorPane.setBottomAnchor(serverListView, null);
 			AnchorPane.setRightAnchor(serverListView, null);
 			serverListView.setPadding(new Insets(0));
-			Server aServer = new Server("Server1");
-			Server bServer = new Server("Server2");
-			serverListView.getChildren().add(new ServerView(aServer));
-			serverListView.getChildren().add(new ServerView(bServer));
+//			Server.serverList.add(1,new Server());
 
 			Button newServer = new Button();
 			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
-			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resouse/pic/new.png", 50, 50, false, true)));
+			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resourse/pic/new.png", 50, 50, false, true)));
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
@@ -147,7 +137,7 @@ public class Gui extends Application {
 //        top.getChildren().add(title);
 
 
-		primaryStage.getIcons().add(new Image(Gui.class.getResourceAsStream("/com/mcsl/resouse/pic/ico.png")));
+		primaryStage.getIcons().add(new Image(Gui.class.getResourceAsStream("/com/mcsl/resourse/pic/ico.png")));
 		primaryStage.setTitle("MCSL");
 		primaryStage.setWidth(810);
 		primaryStage.setHeight(490);
@@ -167,14 +157,14 @@ public class Gui extends Application {
 //		pane.setBackground(new Background(myBI));
 //		//老的背景实现
 
-		Image start_unselected = new Image("/com/mcsl/resouse/pic/start_unselected.png");
-		Image start_selected = new Image("/com/mcsl/resouse/pic/start_selected.png");
-		Image settings_unselected = new Image("/com/mcsl/resouse/pic/settings_unselected.png");
-		Image settings_selected = new Image("/com/mcsl/resouse/pic/settings_selected.png");
-		Image run_unselected = new Image("/com/mcsl/resouse/pic/run_unselected.png");
-		Image run_selected = new Image("/com/mcsl/resouse/pic/run_selected.png");
-		Image manage_unselected = new Image("/com/mcsl/resouse/pic/manage_unselected.png");
-		Image manage_selected = new Image("/com/mcsl/resouse/pic/manage_selected.png");
+		Image start_unselected = new Image("/com/mcsl/resourse/pic/start_unselected.png");
+		Image start_selected = new Image("/com/mcsl/resourse/pic/start_selected.png");
+		Image settings_unselected = new Image("/com/mcsl/resourse/pic/settings_unselected.png");
+		Image settings_selected = new Image("/com/mcsl/resourse/pic/settings_selected.png");
+		Image run_unselected = new Image("/com/mcsl/resourse/pic/run_unselected.png");
+		Image run_selected = new Image("/com/mcsl/resourse/pic/run_selected.png");
+		Image manage_unselected = new Image("/com/mcsl/resourse/pic/manage_unselected.png");
+		Image manage_selected = new Image("/com/mcsl/resourse/pic/manage_selected.png");
 		//加载菜单按钮图片资源
 		Button menuButton_Start = new Button("");
 		Button menuButton_Manage = new Button("");
@@ -288,7 +278,7 @@ public class Gui extends Application {
 
 		AnchorPane backgroundPane = new AnchorPane();
 		Label backgroundLabel = new Label();
-		ImageView backgroundImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resouse/pic/background1.png")));
+		ImageView backgroundImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resourse/pic/background1.png")));
 		backgroundImageView.fitHeightProperty().bind(pane.widthProperty());
 		backgroundImageView.fitWidthProperty().bind(pane.widthProperty());
 		backgroundLabel.setGraphic(backgroundImageView);
@@ -307,7 +297,7 @@ public class Gui extends Application {
 
 		pane.setBottom(menuBox);
 		pane.setCenter(page);
-		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resouse/css/style.css").toString());
+		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resourse/css/style.css").toString());
 //		root.getChildren().addAll(top,pane);
 
 		Scene scene = new Scene(backgroundPane);
