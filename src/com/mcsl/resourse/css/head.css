@@ -1,9 +1,0 @@
-.dev-fx-body {
-    -fx-background-image: url("../images/login.jpg");
-    -fx-background-position: center;
-    -fx-background-repeat: no-repeat;
-    -fx-background-size: cover;
-
-    -fx-pref-width: 1104;
-    -fx-pref-height: 670;
-}

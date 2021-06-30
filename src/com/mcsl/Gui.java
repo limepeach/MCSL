@@ -1,9 +1,7 @@
 package com.mcsl;
 
-//import jfxtras.styles.jmetro.JMetro;
-//import jfxtras.styles.jmetro.Style;
-//import jfxtras.styles.jmetro.Style.*;
-import javafx.application.Application;
+
+import javafx.application.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
@@ -54,18 +52,20 @@ public class Gui extends Application {
 	public class ManagePage extends AnchorPane {
 		class ServerView extends HBox {
 			public ServerView(Server currentServer) {
-				super(50);
+				super(20);
 				this.setStyle("-fx-text-fill:#000000;"
 						+ "-fx-background-color: rgba(255, 255, 255, .8);"
 						+ "-fx-border-color: #000000;"
 						+ "-fx-border-radius: 5px;"
 						+ "-fx-background-radius: 5px;"
-						+ "-fx-font-size: 15px;");
-				this.setSpacing(20);
-				this.setPadding(new Insets(5, 5, 5, 5));
+						+ "-fx-font-size: 20px;");
+				this.setPadding(new Insets(0, 5, 0, 5));
 				Button showCondition = new Button();
+				showCondition.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
+				showCondition.setGraphic(new ImageView(currentServer.serverIcon));
 				showCondition.setDisable(true);
 				Label showName = new Label(currentServer.getServerName());
+				showName.setPrefHeight(40);
 				showName.setMaxWidth(Double.MAX_VALUE);
 				showName.prefWidthProperty().bind(page.widthProperty());
 				VBox.setVgrow(showName, Priority.ALWAYS);
@@ -77,7 +77,7 @@ public class Gui extends Application {
 
 		public ManagePage() {
 			super();
-			VBox serverListView = new VBox();
+			VBox serverListView = new VBox(20);
 //			this.setStyle("-fx-background-color:#FFFFFF");//调试用-显示范围
 			serverListView.setStyle("-fx-text-fill:#000000;"
 					+ "-fx-background-color: rgba(255, 255, 255, .8);"
@@ -86,7 +86,7 @@ public class Gui extends Application {
 					+ "-fx-background-radius: 5px;"
 					+ "-fx-font-size: 15px;");
 			serverListView.setSpacing(2);
-			this.setPadding(new Insets(5, 5, 5, 5));
+//			this.setPadding(new Insets(5, 5, 5, 5));
 			this.getChildren().add(serverListView);
 			this.prefHeightProperty().bind(page.heightProperty());
 			this.prefWidthProperty().bind(page.widthProperty());
@@ -94,12 +94,15 @@ public class Gui extends Application {
 			AnchorPane.setLeftAnchor(serverListView, null);
 			AnchorPane.setBottomAnchor(serverListView, null);
 			AnchorPane.setRightAnchor(serverListView, null);
+
 			serverListView.setPadding(new Insets(0));
-//			Server.serverList.add(1,new Server());
+			for(Server i:Server.serverList){
+				serverListView.getChildren().add(new ServerView(i));
+			}
 
 			Button newServer = new Button();
 			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
-			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resourse/pic/new.png", 50, 50, false, true)));
+			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/new.png", 50, 50, false, true)));
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
@@ -137,7 +140,11 @@ public class Gui extends Application {
 //        top.getChildren().add(title);
 
 
-		primaryStage.getIcons().add(new Image(Gui.class.getResourceAsStream("/com/mcsl/resourse/pic/ico.png")));
+
+		Server.serverList.add(new Server("ServerA"));
+		Server.serverList.add(new Server("ServerA"));
+
+		primaryStage.getIcons().add(new Image(Gui.class.getResourceAsStream("/com/mcsl/resource/pic/ico.png")));
 		primaryStage.setTitle("MCSL");
 		primaryStage.setWidth(810);
 		primaryStage.setHeight(490);
@@ -150,21 +157,61 @@ public class Gui extends Application {
 		pane.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");// 背景
 
 
-//		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resouse/pic/background2.png",810,490,false,false),
+//		BackgroundImage myBI= new BackgroundImage(new Image("/com/mcsl/resource/pic/background2.png",810,490,false,false),
 //		        BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT, BackgroundPosition.DEFAULT,
 //		          BackgroundSize.DEFAULT);
 //		//then you set to your node
 //		pane.setBackground(new Background(myBI));
 //		//老的背景实现
 
-		Image start_unselected = new Image("/com/mcsl/resourse/pic/start_unselected.png");
-		Image start_selected = new Image("/com/mcsl/resourse/pic/start_selected.png");
-		Image settings_unselected = new Image("/com/mcsl/resourse/pic/settings_unselected.png");
-		Image settings_selected = new Image("/com/mcsl/resourse/pic/settings_selected.png");
-		Image run_unselected = new Image("/com/mcsl/resourse/pic/run_unselected.png");
-		Image run_selected = new Image("/com/mcsl/resourse/pic/run_selected.png");
-		Image manage_unselected = new Image("/com/mcsl/resourse/pic/manage_unselected.png");
-		Image manage_selected = new Image("/com/mcsl/resourse/pic/manage_selected.png");
+		HBox head=new HBox(20);
+		head.prefWidthProperty().bind(pane.widthProperty());
+		head.setPadding(new Insets(8));
+		head.setAlignment(Pos.CENTER);
+		head.setStyle("-fx-background-color:rgba(19, 117, 216, .5);");
+		ImageView MCSLLogo=new ImageView(new Image("/com/mcsl/resource/pic/MCSL.png",60,20,false,true));
+		head.getChildren().add(MCSLLogo);
+		HBox headButton=new HBox();
+		headButton.setSpacing(5);
+		Label sep = new Label();
+		sep.prefWidthProperty().bind(page.widthProperty());
+		head.getChildren().add(sep);
+		Button headButton_Minimize=new Button();
+		Button headButton_Close=new Button();
+		headButton_Minimize.setId("head");
+		headButton_Close.setId("head");
+		headButton_Minimize.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/minimize.png", 12, 12, false, true)));
+		headButton_Close.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/close.png", 12, 12, false, true)));
+		headButton_Minimize.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Stage stage = (Stage)headButton_Minimize.getScene().getWindow();
+				stage.setIconified(true);
+			}
+		});
+		headButton_Close.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				Stage stage = (Stage)headButton_Close.getScene().getWindow();
+				stage.close();
+				//close server and work
+				Platform.exit();
+			}
+		});
+		headButton.getChildren().addAll(headButton_Minimize,headButton_Close);
+		head.getChildren().add(headButton);
+
+
+
+
+		Image start_unselected = new Image("/com/mcsl/resource/pic/start_unselected.png");
+		Image start_selected = new Image("/com/mcsl/resource/pic/start_selected.png");
+		Image settings_unselected = new Image("/com/mcsl/resource/pic/settings_unselected.png");
+		Image settings_selected = new Image("/com/mcsl/resource/pic/settings_selected.png");
+		Image run_unselected = new Image("/com/mcsl/resource/pic/run_unselected.png");
+		Image run_selected = new Image("/com/mcsl/resource/pic/run_selected.png");
+		Image manage_unselected = new Image("/com/mcsl/resource/pic/manage_unselected.png");
+		Image manage_selected = new Image("/com/mcsl/resource/pic/manage_selected.png");
 		//加载菜单按钮图片资源
 		Button menuButton_Start = new Button("");
 		Button menuButton_Manage = new Button("");
@@ -278,7 +325,7 @@ public class Gui extends Application {
 
 		AnchorPane backgroundPane = new AnchorPane();
 		Label backgroundLabel = new Label();
-		ImageView backgroundImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resourse/pic/background1.png")));
+		ImageView backgroundImageView = new ImageView(new Image(getClass().getResourceAsStream("/com/mcsl/resource/pic/background1.png")));
 		backgroundImageView.fitHeightProperty().bind(pane.widthProperty());
 		backgroundImageView.fitWidthProperty().bind(pane.widthProperty());
 		backgroundLabel.setGraphic(backgroundImageView);
@@ -295,13 +342,14 @@ public class Gui extends Application {
 		AnchorPane.setRightAnchor(pane, (double) 0);
 		AnchorPane.setBottomAnchor(pane, (double) 0);
 
+		pane.setTop(head);
 		pane.setBottom(menuBox);
 		pane.setCenter(page);
-		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resourse/css/style.css").toString());
+		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resource/css/style.css").toString());
 //		root.getChildren().addAll(top,pane);
 
 		Scene scene = new Scene(backgroundPane);
-//		primaryStage.initStyle(StageStyle.TRANSPARENT);
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 

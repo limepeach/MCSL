@@ -8,6 +8,7 @@ import java.awt.*;
 import java.io.File;
 import java.nio.file.Path;
 
+import javax.print.DocFlavor;
 import javax.swing.*;
 
 public class Server {
@@ -19,7 +20,7 @@ public class Server {
 	private String serverVersion;
 
 	private ServerConditionType serverCondition=ServerConditionType.READY;
-	public ImageView serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/ready.png", 40, 40, false, true));
+	public Image serverIcon;
 
 	boolean enablePluginForMCDR,enablePluginForBucket,enableModForForge,enableModForFabric;
 
@@ -37,6 +38,7 @@ public class Server {
 
 	public Server(String theName) {
 		serverName=theName;
+		setServerCondition(ServerConditionType.DOWNLOADING);
 	}
 
 	public void setServerName(String serverName) {
@@ -177,19 +179,19 @@ public class Server {
 		this.serverCondition = serverCondition;
 		switch (this.serverCondition){
 			case READY:
-				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/ready.png", 40, 40, false, true));
+				this.serverIcon=new Image("/com/mcsl/resource/pic/ready.png", 30, 30, false, true);
 				break;
 			case LOADING:
-				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/loading.git", 40, 40, false, true));
+				this.serverIcon=new Image("/com/mcsl/resource/pic/loading.gif", 30, 30, false, true);
 				break;
 			case DOWNLOADING:
-				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/downloading.png", 40, 40, false, true));
+				this.serverIcon=new Image("/com/mcsl/resource/pic/downloading.png", 30, 30, false, true);
 				break;
 			case INSTALLING:
-				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/installing.gif", 40, 40, false, true));
+				this.serverIcon=new Image("/com/mcsl/resource/pic/installing.gif", 30, 30, false, true);
 				break;
 			case RUNNING:
-				this.serverIcon=new ImageView(new Image("/com/mcsl/resource/pic/running.png", 40, 40, false, true));
+				this.serverIcon=new Image("/com/mcsl/resource/pic/running.png", 30, 30, false, true);
 				break;
 		}
 	}
