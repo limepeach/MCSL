@@ -368,7 +368,7 @@ public class Gui extends Application {
 //		root.getChildren().addAll(top,pane);
 
 		Scene scene = new Scene(backgroundPane);
-		primaryStage.initStyle(StageStyle.DECORATED);
+		primaryStage.initStyle(StageStyle.UNDECORATED);
 		primaryStage.setScene(scene);
 
 ////		窗口拖拉拽
