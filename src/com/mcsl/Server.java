@@ -19,38 +19,38 @@ public class Server {
 
 	private String serverVersion;
 
-	private ServerConditionType serverCondition=ServerConditionType.READY;
+	private ServerConditionType serverCondition = ServerConditionType.READY;
 	public Image serverIcon;
 
-	boolean enablePluginForMCDR,enablePluginForBucket,enableModForForge,enableModForFabric;
+	boolean enablePluginForMCDR, enablePluginForBucket, enableModForForge, enableModForFabric;
 
-	private String MCDRPath,forgePath,FabricPath;
+	private String MCDRPath, forgePath, FabricPath;
 
-	private String javaEnvPath,pythonEnvPath;
+	private String javaEnvPath, pythonEnvPath;
 
-	private int minMemory,maxMemory;
+	private int minMemory, maxMemory;
 	private String jvmParameter;
 
 	private Properties serverSettings, serverOptions;
 
-	public static ArrayList<Server> serverList=new ArrayList<>();
-	public static ArrayList<Server> runningServerList=new ArrayList<>();
+	public static ArrayList<Server> serverList = new ArrayList<>();
+	public static ArrayList<Server> runningServerList = new ArrayList<>();
 
 	public Server(String theName) {
-		serverName=theName;
-		setServerCondition(ServerConditionType.DOWNLOADING);
+		serverName = theName;
+		setServerCondition(ServerConditionType.LOADING);
 	}
 
 	public void setServerName(String serverName) {
 		this.serverName = serverName;
 	}
-	public String getServerName(){
+
+	public String getServerName() {
 		return serverName;
 	}
 
 
-
-	public enum ServerType_Int{
+	public enum ServerType_Int {
 		VANILLA(1),
 		BUKKIT(2),
 		SPIGOT(3),
@@ -61,11 +61,12 @@ public class Server {
 		BUNGEE_CORD(8),
 		WATERFALL(9);
 		private int serverType;
-		ServerType_Int(int inputInt){
-			this.serverType=inputInt;
+
+		ServerType_Int(int inputInt) {
+			this.serverType = inputInt;
 		}
 	}
-	public enum ServerType_String{
+	public enum ServerType_String {
 
 		VANILLA("Vanilla"),
 		BUKKIT("Bukkit"),
@@ -78,13 +79,14 @@ public class Server {
 		WATERFALL("Waterfall");
 
 		private String serverType;
-		ServerType_String(String inputString){
-			this.serverType=inputString;
+
+		ServerType_String(String inputString) {
+			this.serverType = inputString;
 		}
 
 	}
-	public static ServerType_String intToString(ServerType_Int inputInt){
-		switch(inputInt){
+	public static ServerType_String intToString(ServerType_Int inputInt) {
+		switch (inputInt) {
 			case VANILLA:
 				return ServerType_String.VANILLA;
 			case BUKKIT:
@@ -107,8 +109,8 @@ public class Server {
 
 		return null;
 	}
-	public static ServerType_Int stringToInt(ServerType_String inputString){
-		switch(inputString){
+	public static ServerType_Int stringToInt(ServerType_String inputString) {
+		switch (inputString) {
 			case VANILLA:
 				return ServerType_Int.VANILLA;
 			case BUKKIT:
@@ -131,13 +133,13 @@ public class Server {
 
 		return null;
 	}
-	public void setServerType(ServerType_Int serverType1){
-		serverType_Int=serverType1;
-		serverType_String=intToString(serverType1);
+	public void setServerType(ServerType_Int serverType1) {
+		serverType_Int = serverType1;
+		serverType_String = intToString(serverType1);
 	}
-	public void setServerType(ServerType_String serverType1){
-		serverType_String=serverType1;
-		serverType_Int=stringToInt(serverType1);
+	public void setServerType(ServerType_String serverType1) {
+		serverType_String = serverType1;
+		serverType_Int = stringToInt(serverType1);
 	}
 	public ServerType_Int getServerType_Int() {
 		return serverType_Int;
@@ -157,12 +159,13 @@ public class Server {
 	public void setJavaEnvPath(String javaEnvPath) {
 		this.javaEnvPath = javaEnvPath;
 	}
+
 	public String getJavaEnvPath() {
 		return javaEnvPath;
 	}
 
 
-	public enum ServerConditionType{
+	public enum ServerConditionType {
 		READY(1),
 		LOADING(2),
 		DOWNLOADING(3),
@@ -170,28 +173,28 @@ public class Server {
 		RUNNING(5);
 
 		private int theType;
-		ServerConditionType(int inputInt){
-			this.theType=inputInt;
+
+		ServerConditionType(int inputInt) {
+			this.theType = inputInt;
 		}
 	}
-
 	public void setServerCondition(ServerConditionType serverCondition) {
 		this.serverCondition = serverCondition;
-		switch (this.serverCondition){
+		switch (this.serverCondition) {
 			case READY:
-				this.serverIcon=new Image("/com/mcsl/resource/pic/ready.png", 30, 30, false, true);
+				this.serverIcon = new Image("/com/mcsl/resource/pic/ready.png", 30, 30, false, true);
 				break;
 			case LOADING:
-				this.serverIcon=new Image("/com/mcsl/resource/pic/loading.gif", 30, 30, false, true);
+				this.serverIcon = new Image("/com/mcsl/resource/pic/loading.gif", 30, 30, false, true);
 				break;
 			case DOWNLOADING:
-				this.serverIcon=new Image("/com/mcsl/resource/pic/downloading.png", 30, 30, false, true);
+				this.serverIcon = new Image("/com/mcsl/resource/pic/downloading.png", 30, 30, false, true);
 				break;
 			case INSTALLING:
-				this.serverIcon=new Image("/com/mcsl/resource/pic/installing.gif", 30, 30, false, true);
+				this.serverIcon = new Image("/com/mcsl/resource/pic/installing.gif", 30, 30, false, true);
 				break;
 			case RUNNING:
-				this.serverIcon=new Image("/com/mcsl/resource/pic/running.png", 30, 30, false, true);
+				this.serverIcon = new Image("/com/mcsl/resource/pic/running.png", 30, 30, false, true);
 				break;
 		}
 	}

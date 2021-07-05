@@ -2,21 +2,26 @@ package com.mcsl;
 
 
 import javafx.application.*;
+import javafx.beans.property.*;
+import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.*;
 import javafx.scene.control.*;
 import javafx.scene.image.*;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Polygon;
 import javafx.stage.*;
 import javafx.event.*;
+import com.mcsl.Server.*;
+
+
+import java.io.File;
 
 public class Gui extends Application {
 	public static void main(String[] args) {
 		Application.launch(args);
 	}
-
-
 
 
 ////	窗口拖拉拽用
@@ -29,15 +34,133 @@ public class Gui extends Application {
 //	private final static double MIN_WIDTH = 810;// 窗口最小宽度
 //	private final static double MIN_HEIGHT = 490;// 窗口最小高度
 
-	Pane page = new Pane();
+//	ScrollPane superPage=new ScrollPane();
 	BorderPane pane = new BorderPane();
+	VBox mainPart=new VBox();
+	Pane page = new Pane();
+	HBox menuBox = new HBox(40);
 	String pageNow;
+	Stage theStage;
 
+	public class CommonButton extends Button{
+		public CommonButton(){
+			super();
+			preload();
+		}
+		public CommonButton(String text){
+			super(text);
+			preload();
+		}
+		public CommonButton(String text,Node graphic){
+			super(text,graphic);
+			preload();
+		}
+		private void preload(){
+			this.setId("commonButton");
+		}
+	}
+//	public class ScrollBarPane1 extends ScrollPane{
+//		@Override
+//		public ObservableList<Node> getChildren() {
+//			return super.getChildren();
+//		}
+//	}
 
+//	public class ScrollBarPane extends ScrollPane
+//	{
+//		public Pane pane;
+//
+//		public BorderPane selfPane; // 自身用的面板
+//
+//
+//
+//		public ScrollBar hBar; // 横向滚动条
+//		public ScrollBar vBar; // 纵向滚动条
+//
+//		@Override
+//		public ObservableList<Node> getChildren() {
+//			return super.getChildren();
+//		}
+//
+//		public ScrollBarPane()
+//		{
+//			super();
+//
+//			// 设置滚动面板不使用内置的滚动条
+//			this.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//			this.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+//			this.setStyle("-fx-background-color:rgba(255,255,255,.0);");
+//
+//			// 滚动面板的背景颜色
+////		scrollPane.setBackground(new Background(new BackgroundFill(Conver.hexColorStrToColor("EBEBEB"), null, null)));
+//
+//
+//			selfPane = new BorderPane();
+//
+//			hBar = new ScrollBar();
+//			hBar.valueProperty().addListener(new ChangeListener<Number>()
+//			{
+//				@Override
+//				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+//				{
+//					setHvalue(newValue.doubleValue() / 100);
+//				}
+//			});
+//
+//			vBar = new ScrollBar();
+//			vBar.valueProperty().addListener(new ChangeListener<Number>()
+//			{
+//				@Override
+//				public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue)
+//				{
+//					setVvalue(newValue.doubleValue() / 100);
+//				}
+//			});
+//
+//			// 显示为纵向的滚动条
+//			vBar.setOrientation(Orientation.VERTICAL);
+//
+//			// BorderPane下面和右边放滚动条, 中间放滚动面板
+//			selfPane.setRight(vBar);
+//			selfPane.setBottom(hBar);
+//			selfPane.setCenter(this);
+//
+//			this.setHVBarLength(50);
+//			this.setHBarSize(300, 25);
+//			this.setVBarSize(25, 300);
+//		}
+//		/**
+//		 * 设置横向、纵向滚动条按钮的长度
+//		 */
+//		public void setHVBarLength(int length)
+//		{
+//			hBar.setVisibleAmount(length);
+//			vBar.setVisibleAmount(length);
+//		}
+//		/**
+//		 * 设置横向滚动条的大小
+//		 */
+//		public void setHBarSize(int width, int height)
+//		{
+//			hBar.setPrefSize(width, height);
+//		}
+//
+//		/**
+//		 * 设置纵向滚动条的大小
+//		 */
+//		public void setVBarSize(int width, int height)
+//		{
+//			vBar.setPrefSize(width, height);
+//		}
+//	}
 
+	public String getPath(){
+		DirectoryChooser directoryChooser=new DirectoryChooser();
+		File file = directoryChooser.showDialog(theStage);
+		return file.getPath();
+	}
 
-
-	public static class StartPage extends AnchorPane {
+	public class StartPage extends AnchorPane {
 		public StartPage() {
 			super();
 			this.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
@@ -74,19 +197,37 @@ public class Gui extends Application {
 						+ "-fx-border-color: #000000;"
 						+ "-fx-border-radius: 5px;"
 						+ "-fx-background-radius: 5px;"
-						+ "-fx-font-size: 20px;");
+						+ "-fx-font-size: 15px;");
 				this.setPadding(new Insets(0, 5, 0, 5));
+				//!!
+				currentServer.setServerCondition(Server.ServerConditionType.READY);
+				//!!
 				Button showCondition = new Button();
 				showCondition.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
 				showCondition.setGraphic(new ImageView(currentServer.serverIcon));
 				showCondition.setDisable(true);
+				showCondition.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+					}
+				});
 				Label showName = new Label(currentServer.getServerName());
-				showName.setPrefHeight(40);
+				showName.setPrefHeight(30);
 				showName.setMaxWidth(Double.MAX_VALUE);
 				showName.prefWidthProperty().bind(page.widthProperty());
 				VBox.setVgrow(showName, Priority.ALWAYS);
 				Button settingsButton = new Button();
-				this.getChildren().addAll(showCondition, showName, settingsButton);
+				settingsButton.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
+				settingsButton.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/setting.png")));
+				settingsButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+					}
+				});
+				this.getChildren().addAll(showCondition, showName);
+				if(currentServer.getServerCondition()== Server.ServerConditionType.READY){
+					this.getChildren().add(settingsButton);
+				}
 				this.prefWidthProperty().bind(page.widthProperty());
 			}
 		}
@@ -112,18 +253,185 @@ public class Gui extends Application {
 			AnchorPane.setRightAnchor(serverListView, null);
 
 			serverListView.setPadding(new Insets(0));
-			for(Server i:Server.serverList){
+			for (Server i : Server.serverList) {
 				serverListView.getChildren().add(new ServerView(i));
 			}
 
 			Button newServer = new Button();
 			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
 			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/new.png", 50, 50, false, true)));
+//			newServer.setTooltip(new Tooltip("新建服务端"));
+			newServer.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					pane.setCenter(new NewServer());
+				}
+			});
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
 
 		}
+	}
+
+	public class NewServer extends VBox{
+		Pane newServerPage=new Pane();
+		Label stepName=new Label();
+		private void clear(){
+			newServerPage.getChildren().clear();
+		}
+		private ObservableList<Node> getChild() {
+			return super.getChildren();
+		}
+		private ReadOnlyDoubleProperty pageWidth=this.prefWidthProperty();
+		private ReadOnlyDoubleProperty pageHeight=this.prefHeightProperty();
+
+		class setServerType extends ChoiceBox<Object> {
+			ServerType_String serverType;
+			public setServerType(){
+				super();
+				this.setItems(FXCollections.observableArrayList(
+						ServerType_String.VANILLA,
+						Server.ServerType_String.BUKKIT,
+						Server.ServerType_String.SPIGOT,
+						Server.ServerType_String.PAPER,
+						Server.ServerType_String.CAT_SERVER,
+						Server.ServerType_String.SPONGE,
+						Server.ServerType_String.CARPET,
+						Server.ServerType_String.BUNGEE_CORD,
+						Server.ServerType_String.WATERFALL));
+
+				final Server.ServerType_String[] showType = {
+						Server.ServerType_String.VANILLA,
+						Server.ServerType_String.BUKKIT,
+						Server.ServerType_String.SPIGOT,
+						Server.ServerType_String.PAPER,
+						Server.ServerType_String.CAT_SERVER,
+						Server.ServerType_String.SPONGE,
+						Server.ServerType_String.CARPET,
+						Server.ServerType_String.BUNGEE_CORD,
+						Server.ServerType_String.WATERFALL
+				};
+				this.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
+					serverType=showType[newValue.intValue()];
+				});
+			}
+			public ServerType_String getSelect(){
+				return serverType;
+			}
+
+		}
+		class Page_ChooseMethod extends VBox{
+			public Page_ChooseMethod(){
+				super();
+				this.setPadding(new Insets(5));
+				this.prefWidthProperty().bind(newServerPage.widthProperty());
+				stepName.setText("新建服务端");
+				Button importFromExistingSource=new Button();
+				HBox iFESBox=new HBox();
+				iFESBox.setPadding(new Insets(5));
+				iFESBox.setPrefHeight(50);
+				Label iFESLable=new Label("从现有来源s导入");
+				iFESLable.setStyle("-fx-font-size:28px;");
+//				Label iFESSeparate=new Label();
+//				iFESSeparate.prefWidthProperty().bind(this.widthProperty());
+				iFESLable.prefWidthProperty().bind(this.widthProperty());
+				Polygon iFESTriangle = new Polygon();
+				iFESTriangle.getPoints().addAll(
+						-10.0, -17.0,
+						-10.0, 17.0,
+						20.0, 0.0);
+				iFESTriangle.setFill(Color.web("#1375D8"));
+				iFESTriangle.setStroke(Color.web("#1375D8"));
+				iFESBox.getChildren().addAll(iFESLable,iFESTriangle);
+				importFromExistingSource.setGraphic(iFESBox);
+				importFromExistingSource.setId("branch");
+				importFromExistingSource.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						clear();
+						getChild().add(new Page_SetBasicInfo());
+					}
+				});
+				this.getChildren().addAll(importFromExistingSource);
+			}
+		}
+		class Page_SetBasicInfo extends VBox{
+			public Page_SetBasicInfo(){
+				super();
+				this.setPadding(new Insets(10));
+				this.prefWidthProperty().bind(pageWidth);
+				stepName.setText("导入服务端");
+				HBox choosePath=new HBox(30);
+				Label serverPathLabel=new Label("源服务端根目录");
+				TextField serverPathTextField=new TextField();
+				serverPathTextField.setPrefWidth(350);
+				CommonButton serverPathButton=new CommonButton("浏览");
+				serverPathButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						serverPathTextField.setText(getPath());
+					}
+				});
+				choosePath.getChildren().addAll(serverPathLabel,serverPathTextField,serverPathButton);
+//				choosePath.setAlignment(Pos.TOP_LEFT);
+				HBox chooseServerCore=new HBox(30);
+				Label serverCoreLabel=new Label("服务器核心文件名");
+				TextField serverCoreTextField=new TextField();
+				serverCoreTextField.setPrefWidth(100);
+				chooseServerCore.getChildren().addAll(serverCoreLabel,serverCoreTextField);
+
+
+				this.getChildren().addAll(choosePath,chooseServerCore);
+
+			}
+		}
+		public NewServer(){
+			super();
+			this.prefWidthProperty().bind(pane.widthProperty());
+			this.prefHeightProperty().bind(pane.heightProperty());
+			Polygon backGraphic=new Polygon();
+			backGraphic.getPoints().addAll(
+					5.0, -8.5,
+					5.0, 8.5,
+					-9.0, 0.0);
+			backGraphic.setFill(Color.web("#1375D8"));
+			backGraphic.setStroke(Color.web("#1375D8"));
+			Button back=new Button();
+			back.setGraphic(backGraphic);
+			back.setStyle("-fx-background-color:rgba(255,255,255,.0);");
+			back.setOnAction(new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent event) {
+					pane.setCenter(mainPart);
+					try {
+						this.finalize();
+					} catch (Throwable throwable) {
+						throwable.printStackTrace();
+					}
+				}
+			});
+//			stepName.setStyle("-fx-line-height:5");
+			stepName.setStyle("-fx-font-size:20px");
+//			stepName.setPrefHeight(15);
+			stepName.setAlignment(Pos.CENTER_RIGHT);
+			HBox title=new HBox(17);
+			title.setPadding(new Insets(5));
+			title.getChildren().addAll(back,stepName);
+			this.getChildren().add(title);
+			newServerPage.prefWidthProperty().bind(pane.widthProperty());
+			newServerPage.prefHeightProperty().bind(pane.heightProperty().add(-67));
+//			this.prefWidthProperty().bind(pane.widthProperty().add(-50));
+//			this.prefHeightProperty().bind(pane.heightProperty().add(-50));
+			this.setStyle(
+					"-fx-background-color: #FFFFFF;" +
+					"-fx-border-color: rgba(255,255,255,.0);" +
+					"-fx-border-radius: 8;" +
+					"-fx-background-radius: 8;");
+			newServerPage.getChildren().add(new Page_ChooseMethod());
+			this.getChildren().add(newServerPage);
+		}
+
 	}
 
 	public void setButtonType(Button menuButton, boolean type) {
@@ -134,31 +442,24 @@ public class Gui extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-//		VBox root = new VBox();
-//        root.setId("root");
-//        // 引入样式
-//        root.getStylesheets().add(Gui.class.getResource("/mcsl/bin/com/mcsl/resource/css/style.css").toString());
-//
-//
-//        //顶部
-//        VBox top = new VBox();
-//        top.setId("top");
-//        top.setPrefSize(300,26);
-//        // 标题栏
-//        AnchorPane title = new AnchorPane();
-//        Label close = new Label();
-//        close.setPrefWidth(33);
-//        close.setPrefHeight(26);
-//        close.setId("winClose");//winClose css样式Id
-//        title.getChildren().add(close);
-//        AnchorPane.setRightAnchor(close, 0.0);
-//        AnchorPane.setTopAnchor(close, 5.0);
-//        top.getChildren().add(title);
-
-
+		theStage=primaryStage;
 
 		Server.serverList.add(new Server("ServerA"));
 		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
+//		Server.serverList.add(new Server("ServerA"));
 
 		primaryStage.getIcons().add(new Image("/com/mcsl/resource/pic/ico.png"));
 		primaryStage.setTitle("MCSL");
@@ -167,6 +468,13 @@ public class Gui extends Application {
 		primaryStage.setMinWidth(810);
 		primaryStage.setMinHeight(490);
 
+//		superPage.setContent(page);
+//		superPage.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+//		superPage.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
+//		superPage.prefWidthProperty().bind(pane.widthProperty());
+//		page.prefHeightProperty().bind(pane.heightProperty());
+//		page.prefWidthProperty().bind(pane.widthProperty().add(-15));
+		page.prefHeightProperty().bind(pane.heightProperty().add(-94));
 
 		pane.setId("biggest_pane");
 		pane.setPadding(new Insets(0, 0, 0, 0));// 下左上右
@@ -180,20 +488,20 @@ public class Gui extends Application {
 //		pane.setBackground(new Background(myBI));
 //		//老的背景实现
 
-		HBox head=new HBox(20);
+		HBox head = new HBox(20);
 		head.prefWidthProperty().bind(pane.widthProperty());
 		head.setPadding(new Insets(8));
 		head.setAlignment(Pos.CENTER);
 		head.setStyle("-fx-background-color:rgba(19, 117, 216, .5);");
-		ImageView MCSLLogo=new ImageView(new Image("/com/mcsl/resource/pic/MCSL.png",60,20,false,true));
+		ImageView MCSLLogo = new ImageView(new Image("/com/mcsl/resource/pic/MCSL.png", 60, 20, false, true));
 		head.getChildren().add(MCSLLogo);
-		HBox headButton=new HBox();
+		HBox headButton = new HBox();
 		headButton.setSpacing(5);
 		Label sep = new Label();
-		sep.prefWidthProperty().bind(page.widthProperty());
+		sep.prefWidthProperty().bind(pane.widthProperty());
 		head.getChildren().add(sep);
-		Button headButton_Minimize=new Button();
-		Button headButton_Close=new Button();
+		Button headButton_Minimize = new Button();
+		Button headButton_Close = new Button();
 		headButton_Minimize.setId("head");
 		headButton_Close.setId("head");
 		headButton_Minimize.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/minimize.png", 12, 12, false, true)));
@@ -201,23 +509,21 @@ public class Gui extends Application {
 		headButton_Minimize.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Stage stage = (Stage)headButton_Minimize.getScene().getWindow();
+				Stage stage = (Stage) headButton_Minimize.getScene().getWindow();
 				stage.setIconified(true);
 			}
 		});
 		headButton_Close.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
-				Stage stage = (Stage)headButton_Close.getScene().getWindow();
+				Stage stage = (Stage) headButton_Close.getScene().getWindow();
 				stage.close();
 				//close server and work
 				Platform.exit();
 			}
 		});
-		headButton.getChildren().addAll(headButton_Minimize,headButton_Close);
+		headButton.getChildren().addAll(headButton_Minimize, headButton_Close);
 		head.getChildren().add(headButton);
-
-
 
 
 		Image start_unselected = new Image("/com/mcsl/resource/pic/start_unselected.png", 30, 30, false, true);
@@ -244,6 +550,7 @@ public class Gui extends Application {
 		menuButton_Settings.setId("menu");
 		// 加载默认样式
 
+//		superPage.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
 		page.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
 		//设置背景透明
 
@@ -292,7 +599,7 @@ public class Gui extends Application {
 				page.getChildren().add(new ManagePage());
 			}
 		});
-		menuButton_Run.setOnAction(new EventHandler<ActionEvent>(){
+		menuButton_Run.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				setButtonType(menuButton_Run, true);
@@ -323,7 +630,6 @@ public class Gui extends Application {
 			}
 		});
 
-		HBox menuBox = new HBox(40);
 		menuBox.getChildren().addAll(menuButton_Start, menuButton_Manage, menuButton_Run, menuButton_Settings);
 		menuBox.setAlignment(Pos.CENTER);
 		menuBox.setPadding(new Insets(5));
@@ -361,11 +667,11 @@ public class Gui extends Application {
 		AnchorPane.setRightAnchor(pane, (double) 0);
 		AnchorPane.setBottomAnchor(pane, (double) 0);
 
+
+		mainPart.getChildren().addAll(page,menuBox);
 		pane.setTop(head);
-		pane.setBottom(menuBox);
-		pane.setCenter(page);
+		pane.setCenter(mainPart);
 		pane.getStylesheets().add(Gui.class.getResource("/com/mcsl/resource/css/style.css").toString());
-//		root.getChildren().addAll(top,pane);
 
 		Scene scene = new Scene(backgroundPane);
 		primaryStage.initStyle(StageStyle.UNDECORATED);
