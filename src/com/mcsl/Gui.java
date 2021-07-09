@@ -279,6 +279,8 @@ public class Gui extends Application {
 		Label stepName=new Label();
 		private void clear(){
 			newServerPage.getChildren().clear();
+			newServerPage.prefWidthProperty().bind(pane.widthProperty());
+			newServerPage.prefHeightProperty().bind(pane.heightProperty().add(-67));
 		}
 		private ObservableList<Node> getChild() {
 			return super.getChildren();
@@ -331,7 +333,7 @@ public class Gui extends Application {
 				HBox iFESBox=new HBox();
 				iFESBox.setPadding(new Insets(5));
 				iFESBox.setPrefHeight(50);
-				Label iFESLable=new Label("从现有来源s导入");
+				Label iFESLable=new Label("从现有来源导入");
 				iFESLable.setStyle("-fx-font-size:28px;");
 //				Label iFESSeparate=new Label();
 //				iFESSeparate.prefWidthProperty().bind(this.widthProperty());
@@ -360,7 +362,7 @@ public class Gui extends Application {
 			public Page_SetBasicInfo(){
 				super();
 				this.setPadding(new Insets(10));
-				this.prefWidthProperty().bind(pageWidth);
+				this.prefWidthProperty().bind(newServerPage.widthProperty());
 				stepName.setText("导入服务端");
 				HBox choosePath=new HBox(30);
 				Label serverPathLabel=new Label("源服务端根目录");
@@ -380,7 +382,9 @@ public class Gui extends Application {
 				TextField serverCoreTextField=new TextField();
 				serverCoreTextField.setPrefWidth(100);
 				chooseServerCore.getChildren().addAll(serverCoreLabel,serverCoreTextField);
+				HBox chooseServerType=new HBox(30);
 
+				setServerType serverTypeComboBox=new setServerType();
 
 				this.getChildren().addAll(choosePath,chooseServerCore);
 
@@ -419,8 +423,7 @@ public class Gui extends Application {
 			title.setPadding(new Insets(5));
 			title.getChildren().addAll(back,stepName);
 			this.getChildren().add(title);
-			newServerPage.prefWidthProperty().bind(pane.widthProperty());
-			newServerPage.prefHeightProperty().bind(pane.heightProperty().add(-67));
+			clear();
 //			this.prefWidthProperty().bind(pane.widthProperty().add(-50));
 //			this.prefHeightProperty().bind(pane.heightProperty().add(-50));
 			this.setStyle(
