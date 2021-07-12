@@ -24,6 +24,7 @@ public class Server {
 
 	boolean enablePluginForMCDR, enablePluginForBucket, enableModForForge, enableModForFabric;
 
+	private String coreName;
 	private String MCDRPath, forgePath, FabricPath;
 
 	private String javaEnvPath, pythonEnvPath;
@@ -35,7 +36,9 @@ public class Server {
 
 	public static ArrayList<Server> serverList = new ArrayList<>();
 	public static ArrayList<Server> runningServerList = new ArrayList<>();
-
+	public Server() {
+		setServerCondition(ServerConditionType.LOADING);
+	}
 	public Server(String theName) {
 		serverName = theName;
 		setServerCondition(ServerConditionType.LOADING);
@@ -156,10 +159,15 @@ public class Server {
 		return serverVersion;
 	}
 
+	public void setCoreName(String coreName) {
+		this.coreName = coreName;
+	}
+	public String getCoreName() {
+		return coreName;
+	}
 	public void setJavaEnvPath(String javaEnvPath) {
 		this.javaEnvPath = javaEnvPath;
 	}
-
 	public String getJavaEnvPath() {
 		return javaEnvPath;
 	}
@@ -200,5 +208,66 @@ public class Server {
 	}
 	public ServerConditionType getServerCondition() {
 		return serverCondition;
+	}
+
+	/**
+	 * 检测是否可以安装Forge Mod(类型层面)
+	 * 注意：并不是可以安装，有些可能需要安装api
+	 */
+	public boolean getForgeAble(){
+		switch (getServerType_Int()) {
+			case VANILLA:
+			case BUKKIT:
+			case WATERFALL:
+			case BUNGEE_CORD:
+			case CARPET:
+			case PAPER:
+			case SPIGOT:
+				return false;
+			case CAT_SERVER:
+			case SPONGE:
+				return true;
+		}
+		return false;
+	}
+	/**
+	 * 检测是否可以安装Fabric Mod(类型层面)
+	 * 注意：并不是可以安装，有些可能需要安装api
+	 */
+	public boolean getFabricAble(){
+		switch (getServerType_Int()) {
+			case VANILLA:
+			case CARPET:
+				return true;
+			case BUKKIT:
+			case WATERFALL:
+			case BUNGEE_CORD:
+			case SPONGE:
+			case CAT_SERVER:
+			case PAPER:
+			case SPIGOT:
+				return false;
+		}
+		return false;
+	}
+	/**
+	 * 检测是否可以安装插件(类型层面)
+	 * 注意：并不是可以安装，有些可能需要安装api
+	 */
+	public boolean getPluginAble(){
+		switch (getServerType_Int()) {
+			case VANILLA:
+			case CARPET:
+			case SPONGE:
+				return false;
+			case BUKKIT:
+			case WATERFALL:
+			case BUNGEE_CORD:
+			case CAT_SERVER:
+			case PAPER:
+			case SPIGOT:
+				return true;
+		}
+		return false;
 	}
 }

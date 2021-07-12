@@ -3,6 +3,8 @@ package com.mcsl;
 
 import javafx.application.*;
 import javafx.beans.property.*;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.*;
 import javafx.geometry.*;
 import javafx.scene.*;
@@ -42,6 +44,9 @@ public class Gui extends Application {
 	String pageNow;
 	Stage theStage;
 
+	/**
+	 * 一个普通的按钮
+	 */
 	public class CommonButton extends Button{
 		public CommonButton(){
 			super();
@@ -154,12 +159,20 @@ public class Gui extends Application {
 //		}
 //	}
 
+	/**
+	 * 选择一个目录
+	 * 使用文件资源管理器
+	 * @return 返回目录的路径(String)
+	 */
 	public String getPath(){
 		DirectoryChooser directoryChooser=new DirectoryChooser();
 		File file = directoryChooser.showDialog(theStage);
 		return file.getPath();
 	}
 
+	/**
+	 * 开始页面
+	 */
 	public class StartPage extends AnchorPane {
 		public StartPage() {
 			super();
@@ -187,8 +200,13 @@ public class Gui extends Application {
 
 		}
 	}
-
+	/**
+	 * 管理页面
+	 */
 	public class ManagePage extends AnchorPane {
+		/**
+		 * 每一个服务端的显示
+		 */
 		class ServerView extends HBox {
 			public ServerView(Server currentServer) {
 				super(20);
@@ -231,7 +249,6 @@ public class Gui extends Application {
 				this.prefWidthProperty().bind(page.widthProperty());
 			}
 		}
-
 		public ManagePage() {
 			super();
 			VBox serverListView = new VBox(20);
@@ -273,46 +290,107 @@ public class Gui extends Application {
 
 		}
 	}
-
+	/**
+	 * 新建服务端
+	 */
 	public class NewServer extends VBox{
+		Server theNewServer=new Server();
 		Pane newServerPage=new Pane();
 		Label stepName=new Label();
+		final int labelWidth=100;
+		/**
+		 * 清空页面
+		 */
 		private void clear(){
 			newServerPage.getChildren().clear();
 			newServerPage.prefWidthProperty().bind(pane.widthProperty());
 			newServerPage.prefHeightProperty().bind(pane.heightProperty().add(-67));
 		}
+		/**
+		 * 扩大getChild的范围以使得内部类能够访问
+		 */
 		private ObservableList<Node> getChild() {
-			return super.getChildren();
+			return newServerPage.getChildren();
+		}
+		public void add(Node node){
+
 		}
 		private ReadOnlyDoubleProperty pageWidth=this.prefWidthProperty();
 		private ReadOnlyDoubleProperty pageHeight=this.prefHeightProperty();
+//		/**
+//		 * 行间隔符
+//		 */
+//		public class Separation extends Label{
+//			public Separation(){
+//				super();
+//			}
+//		}
+		/**
+		 * 页面结尾间隔符
+		 */
+		public class EndSeparation extends Label{
 
+			public EndSeparation(){
+				super();
+			}
+			public EndSeparation(int height){
+				super();
+				this.prefHeightProperty().bind(newServerPage.heightProperty().add(-70).add(-height));
+			}
+		}
+		/**
+		 * 下一页按钮
+		 */
+		class NextPage extends HBox{
+			class NextPageButton extends Button{
+				public NextPageButton(){
+					super();
+					this.setStyle(
+							"-fx-text-fill:#FFFFFF;" +
+									"-fx-background-color: #1375D8;" +
+									"-fx-border-color: #000000;" +
+									"-fx-pref-width: 60px;" +
+									"-fx-pref-height: 30px;" +
+									"-fx-border-radius: 5;" +
+									"-fx-background-radius: 5;");
+					this.setText("下一步");
+				}
+			}
+			public NextPageButton nextPageButton=new NextPageButton();
+			public NextPage(){
+				super();
+				this.setAlignment(Pos.BOTTOM_RIGHT);
+				this.getChildren().add(nextPageButton);
+			}
+		}
+		/**
+		 * 选择服务端类型(下拉框)
+		 */
 		class setServerType extends ChoiceBox<Object> {
 			ServerType_String serverType;
 			public setServerType(){
 				super();
 				this.setItems(FXCollections.observableArrayList(
 						ServerType_String.VANILLA,
-						Server.ServerType_String.BUKKIT,
-						Server.ServerType_String.SPIGOT,
-						Server.ServerType_String.PAPER,
-						Server.ServerType_String.CAT_SERVER,
-						Server.ServerType_String.SPONGE,
-						Server.ServerType_String.CARPET,
-						Server.ServerType_String.BUNGEE_CORD,
-						Server.ServerType_String.WATERFALL));
+						ServerType_String.BUKKIT,
+						ServerType_String.SPIGOT,
+						ServerType_String.PAPER,
+						ServerType_String.CAT_SERVER,
+						ServerType_String.SPONGE,
+						ServerType_String.CARPET,
+						ServerType_String.BUNGEE_CORD,
+						ServerType_String.WATERFALL));
 
 				final Server.ServerType_String[] showType = {
-						Server.ServerType_String.VANILLA,
-						Server.ServerType_String.BUKKIT,
-						Server.ServerType_String.SPIGOT,
-						Server.ServerType_String.PAPER,
-						Server.ServerType_String.CAT_SERVER,
-						Server.ServerType_String.SPONGE,
-						Server.ServerType_String.CARPET,
-						Server.ServerType_String.BUNGEE_CORD,
-						Server.ServerType_String.WATERFALL
+						ServerType_String.VANILLA,
+						ServerType_String.BUKKIT,
+						ServerType_String.SPIGOT,
+						ServerType_String.PAPER,
+						ServerType_String.CAT_SERVER,
+						ServerType_String.SPONGE,
+						ServerType_String.CARPET,
+						ServerType_String.BUNGEE_CORD,
+						ServerType_String.WATERFALL
 				};
 				this.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
 					serverType=showType[newValue.intValue()];
@@ -323,10 +401,28 @@ public class Gui extends Application {
 			}
 
 		}
+		class setServerApi extends ChoiceBox<Object> {
+			String usingApi;
+			public setServerApi(){
+				super();
+				this.setItems(FXCollections.observableArrayList("none","Forge","Fabric"));
+				final String[] showType = {"none","Forge","Fabric"};
+				this.getSelectionModel().selectedIndexProperty().addListener((ov, oldValue, newValue) -> {
+					usingApi=showType[newValue.intValue()];
+				});
+			}
+			public String getSelect(){
+				return usingApi;
+			}
+
+		}
+		/**
+		 * 选择下载还是导入
+		 */
 		class Page_ChooseMethod extends VBox{
 			public Page_ChooseMethod(){
 				super();
-				this.setPadding(new Insets(5));
+				this.setPadding(new Insets(10));
 				this.prefWidthProperty().bind(newServerPage.widthProperty());
 				stepName.setText("新建服务端");
 				Button importFromExistingSource=new Button();
@@ -358,17 +454,28 @@ public class Gui extends Application {
 				this.getChildren().addAll(importFromExistingSource);
 			}
 		}
+		/**
+		 * 设置基本信息
+		 * 包括：服务端根目录、核心、类型、版本
+		 */
 		class Page_SetBasicInfo extends VBox{
+			/**
+			 * 设置基本信息
+			 * 包括：服务端根目录、核心、类型、版本
+			 */
 			public Page_SetBasicInfo(){
-				super();
+				super(15);
 				this.setPadding(new Insets(10));
 				this.prefWidthProperty().bind(newServerPage.widthProperty());
 				stepName.setText("导入服务端");
-				HBox choosePath=new HBox(30);
+
+				HBox choosePath=new HBox(15);
 				Label serverPathLabel=new Label("源服务端根目录");
+				serverPathLabel.setPrefWidth(labelWidth);
 				TextField serverPathTextField=new TextField();
 				serverPathTextField.setPrefWidth(350);
 				CommonButton serverPathButton=new CommonButton("浏览");
+				serverPathButton.setPrefHeight(25);
 				serverPathButton.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent event) {
@@ -377,19 +484,123 @@ public class Gui extends Application {
 				});
 				choosePath.getChildren().addAll(serverPathLabel,serverPathTextField,serverPathButton);
 //				choosePath.setAlignment(Pos.TOP_LEFT);
-				HBox chooseServerCore=new HBox(30);
+
+				HBox chooseServerCore=new HBox(15);
 				Label serverCoreLabel=new Label("服务器核心文件名");
+				serverCoreLabel.setPrefWidth(labelWidth);
 				TextField serverCoreTextField=new TextField();
 				serverCoreTextField.setPrefWidth(100);
 				chooseServerCore.getChildren().addAll(serverCoreLabel,serverCoreTextField);
-				HBox chooseServerType=new HBox(30);
 
+				HBox chooseServerType=new HBox(15);
+				Label serverTypeLabel=new Label("服务端类型");
+				serverTypeLabel.setPrefWidth(labelWidth);
 				setServerType serverTypeComboBox=new setServerType();
+				Label serverTypeWarn=new Label("若不清楚请选择VANILLA");
+				chooseServerType.getChildren().addAll(serverTypeLabel,serverTypeComboBox,serverTypeWarn);
 
-				this.getChildren().addAll(choosePath,chooseServerCore);
+				HBox chooseServerVersion=new HBox(15);
+				Label serverVersionLabel=new Label("服务器版本");
+				serverVersionLabel.setPrefWidth(labelWidth);
+				TextField serverVersionTextField=new TextField();
+				serverVersionTextField.setPrefWidth(100);
+				chooseServerVersion.getChildren().addAll(serverVersionLabel,serverVersionTextField);
+
+				NextPage next=new NextPage();
+				next.nextPageButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						if(serverPathTextField.getText()==null||
+								serverCoreTextField.getText()==null||
+								serverTypeComboBox.getSelect()==null||
+								serverVersionTextField.getText()==null){
+							return;
+						}
+						theNewServer.setServerName(serverPathTextField.getText());
+						theNewServer.setCoreName(serverCoreTextField.getText());
+						theNewServer.setServerType(serverTypeComboBox.getSelect());
+						theNewServer.setServerVersion(serverVersionTextField.getText());
+						clear();
+						if(theNewServer.getServerType_Int()==ServerType_Int.VANILLA){
+							getChild().add(new Page_SetModInfo());
+						}
+						else{
+							//
+						}
+					}
+				});
+				this.getChildren().addAll(choosePath,chooseServerCore,chooseServerType,chooseServerVersion);
+				this.getChildren().addAll(new EndSeparation(150),next);
 
 			}
 		}
+		/**
+		 * 设置模组信息
+		 * 包括：
+		 */
+		class Page_SetModInfo extends VBox{
+			/**
+			 * 设置模组信息
+			 * 包括：
+			 */
+			public Page_SetModInfo(){
+				super(15);
+				this.setPadding(new Insets(10));
+				this.prefWidthProperty().bind(newServerPage.widthProperty());
+				stepName.setText("设置模组信息");
+
+				HBox chooseApi=new HBox(15);
+				Label serverApiLabel=new Label("模组加载api");
+				chooseApi.setPrefWidth(labelWidth);
+				setServerApi serverApiComboBox=new setServerApi();
+				Label serverTypeWarn=new Label("若无请选择none");
+				chooseApi.getChildren().addAll(serverApiLabel,serverApiComboBox,serverTypeWarn);
+				HBox chooseApiCore=new HBox(15);
+//				chooseApiCore.setVisible(false);
+				Label serverApiCoreLabel=new Label();
+				serverApiCoreLabel.setPrefWidth(labelWidth);
+				TextField serverApiCoreTextField=new TextField();
+				serverApiCoreTextField.setPrefWidth(100);
+				chooseApiCore.getChildren().addAll(serverApiCoreLabel,serverApiCoreTextField);
+				serverApiComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
+					@Override
+					public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+						if(newValue=="none"){
+//							chooseApiCore.setVisible(false);
+							serverApiCoreLabel.setText("");
+						}
+						if(newValue=="Forge"){
+//							chooseApiCore.setVisible(true);
+							serverApiCoreLabel.setText("Forge Api文件名");
+						}
+						if(newValue=="Fabric"){
+//							chooseApiCore.setVisible(true);
+							serverApiCoreLabel.setText("Fabric Api文件名");
+						}
+
+					}
+				});
+
+				NextPage next=new NextPage();
+				next.nextPageButton.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent event) {
+						if(serverApiComboBox.getSelect()==null||((serverApiComboBox.getSelect()=="Forge"||serverApiComboBox.getSelect()=="Fabric")&& serverApiCoreTextField.getText().equals(""))){
+							return;
+						}
+//						theNewServer.setServerName(serverPathTextField.getText());
+//						theNewServer.setCoreName(serverCoreTextField.getText());
+//						theNewServer.setServerType(serverTypeComboBox.getSelect());
+//						theNewServer.setServerVersion(serverVersionTextField.getText());
+						clear();
+					}
+				});
+				this.getChildren().addAll(chooseApi,chooseApiCore);
+				this.getChildren().addAll(new EndSeparation(72),next);
+
+			}
+		}
+
 		public NewServer(){
 			super();
 			this.prefWidthProperty().bind(pane.widthProperty());
@@ -413,6 +624,7 @@ public class Gui extends Application {
 					} catch (Throwable throwable) {
 						throwable.printStackTrace();
 					}
+					//exit operations
 				}
 			});
 //			stepName.setStyle("-fx-line-height:5");
@@ -427,7 +639,7 @@ public class Gui extends Application {
 //			this.prefWidthProperty().bind(pane.widthProperty().add(-50));
 //			this.prefHeightProperty().bind(pane.heightProperty().add(-50));
 			this.setStyle(
-					"-fx-background-color: #FFFFFF;" +
+					"-fx-background-color: rgba(255,255,255,.9);" +
 					"-fx-border-color: rgba(255,255,255,.0);" +
 					"-fx-border-radius: 8;" +
 					"-fx-background-radius: 8;");

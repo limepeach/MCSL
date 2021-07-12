@@ -63,24 +63,18 @@
     -fx-border-color: #1375D8;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 35px;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 35px;
+    -fx-pref-width: 60px;
+    -fx-pref-height: 25px;
  }
  #commonButton.button:hover{
     -fx-text-fill:#1375D8;
     -fx-background-color: rgba(19, 117, 216, .5);
     -fx-border-color: #1375D8;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 35px;
  }
  #commonButton.button:disabled{
     -fx-text-fill:#1375D8;
     -fx-background-color: rgba(112, 112, 112, .5);
     -fx-border-color: #1375D8;
-    -fx-pref-width: 100px;
-    -fx-pref-height: 35px;
  }
  #branch.button{
     -fx-background-color: #FFFFFF;
