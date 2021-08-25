@@ -18,14 +18,16 @@ public class Server {
 	private ServerType_Int serverType_Int;
 
 	private String serverVersion;
+	private String serverPath;
 
 	private ServerConditionType serverCondition = ServerConditionType.READY;
 	public Image serverIcon;
 
-	boolean enablePluginForMCDR, enablePluginForBucket, enableModForForge, enableModForFabric;
+	boolean enablePluginForMCDR, enablePluginForBucket, enableModForForge;
+	private String apiType;
 
 	private String coreName;
-	private String MCDRPath, forgePath, FabricPath;
+	private String MCDRPath, apiName;
 
 	private String javaEnvPath, pythonEnvPath;
 
@@ -52,6 +54,12 @@ public class Server {
 		return serverName;
 	}
 
+	public void setServerPath(String serverPath) {
+		this.serverPath = serverPath;
+	}
+	public String getServerPath() {
+		return serverPath;
+	}
 
 	public enum ServerType_Int {
 		VANILLA(1),
@@ -269,5 +277,19 @@ public class Server {
 				return true;
 		}
 		return false;
+	}
+
+
+	public void setApiType(String apiType) {
+		this.apiType = apiType;
+	}
+	public String getApiType() {
+		return apiType;
+	}
+	public void setApiName(String apiName) {
+		this.apiName = apiName;
+	}
+	public String getApiName() {
+		return apiName;
 	}
 }

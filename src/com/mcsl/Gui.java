@@ -22,6 +22,11 @@ import java.io.File;
 
 public class Gui extends Application {
 	public static void main(String[] args) {
+		String currentDirectory = new File("").getAbsolutePath();
+		if (currentDirectory.contains("!")) {
+			System.err.println("For some reasons, '!' is not able in the path");
+			System.exit(1);
+		}
 		Application.launch(args);
 	}
 
@@ -170,36 +175,7 @@ public class Gui extends Application {
 		return file.getPath();
 	}
 
-	/**
-	 * 开始页面
-	 */
-	public class StartPage extends AnchorPane {
-		public StartPage() {
-			super();
-			this.setStyle("-fx-background-color:rgba(255, 255, 255, .0);");
-			Label startPageInfo = new Label(
-					"	当前版本为0.0.0.1\r\n"
-							+ "	目前MCSL任然处于内测中\r\n"
-							+ "	功能不甚完善\r\n"
-							+ "	有什么建议欢迎添加交流群\r\n"
-							+ "	群号：857934957\r\n"
-							+ "	感谢各位赞助者们！\r\n");
-			startPageInfo.setStyle("-fx-text-fill:#000000;"
-					+ "-fx-background-color: rgba(255, 255, 255, .8);"
-					+ "-fx-border-color: #000000;"
-					+ "-fx-border-radius: 5px;"
-					+ "-fx-background-radius: 5px;"
-					+ "-fx-font-size: 15px;"
-					+ "-fx-pref-width: 300px;"
-					+ "-fx-pref-height: 200px;"
-					+ "-fx-padding: 6 6 6 6;");
-			this.getChildren().add(startPageInfo);
-			AnchorPane.setTopAnchor(startPageInfo, 40.0);
-			AnchorPane.setLeftAnchor(startPageInfo, 40.0);
-			AnchorPane.setRightAnchor(startPageInfo, 40.0);
 
-		}
-	}
 	/**
 	 * 管理页面
 	 */
@@ -224,10 +200,7 @@ public class Gui extends Application {
 				showCondition.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
 				showCondition.setGraphic(new ImageView(currentServer.serverIcon));
 				showCondition.setDisable(true);
-				showCondition.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-					}
+				showCondition.setOnAction(event -> {
 				});
 				Label showName = new Label(currentServer.getServerName());
 				showName.setPrefHeight(30);
@@ -237,10 +210,7 @@ public class Gui extends Application {
 				Button settingsButton = new Button();
 				settingsButton.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
 				settingsButton.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/setting.png")));
-				settingsButton.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-					}
+				settingsButton.setOnAction(event -> {
 				});
 				this.getChildren().addAll(showCondition, showName);
 				if(currentServer.getServerCondition()== Server.ServerConditionType.READY){
@@ -278,12 +248,7 @@ public class Gui extends Application {
 			newServer.setStyle("-fx-background-color: rgba(255, 255, 255, .0);");
 			newServer.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/new.png", 50, 50, false, true)));
 //			newServer.setTooltip(new Tooltip("新建服务端"));
-			newServer.setOnAction(new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent event) {
-					pane.setCenter(new NewServer());
-				}
-			});
+			newServer.setOnAction(event -> pane.setCenter(new NewServer()));
 			this.getChildren().add(newServer);
 			AnchorPane.setBottomAnchor(newServer, 30.0);
 			AnchorPane.setRightAnchor(newServer, 30.0);
@@ -444,12 +409,9 @@ public class Gui extends Application {
 				iFESBox.getChildren().addAll(iFESLable,iFESTriangle);
 				importFromExistingSource.setGraphic(iFESBox);
 				importFromExistingSource.setId("branch");
-				importFromExistingSource.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						clear();
-						getChild().add(new Page_SetBasicInfo());
-					}
+				importFromExistingSource.setOnAction(event -> {
+					clear();
+					getChild().add(new Page_SetBasicInfo());
 				});
 				this.getChildren().addAll(importFromExistingSource);
 			}
@@ -476,12 +438,7 @@ public class Gui extends Application {
 				serverPathTextField.setPrefWidth(350);
 				CommonButton serverPathButton=new CommonButton("浏览");
 				serverPathButton.setPrefHeight(25);
-				serverPathButton.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						serverPathTextField.setText(getPath());
-					}
-				});
+				serverPathButton.setOnAction(event -> serverPathTextField.setText(getPath()));
 				choosePath.getChildren().addAll(serverPathLabel,serverPathTextField,serverPathButton);
 //				choosePath.setAlignment(Pos.TOP_LEFT);
 
@@ -506,42 +463,74 @@ public class Gui extends Application {
 				serverVersionTextField.setPrefWidth(100);
 				chooseServerVersion.getChildren().addAll(serverVersionLabel,serverVersionTextField);
 
+				Label wrong =new Label();
+				wrong.setStyle("-fx-text-fill:red");
+
+
 				NextPage next=new NextPage();
-				next.nextPageButton.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						if(serverPathTextField.getText()==null||
-								serverCoreTextField.getText()==null||
-								serverTypeComboBox.getSelect()==null||
-								serverVersionTextField.getText()==null){
-							return;
-						}
-						theNewServer.setServerName(serverPathTextField.getText());
+				next.nextPageButton.setOnAction(event -> {
+
+					//TODO:debug settings here
+					//debug using begin
+					serverPathTextField.setText("D:\\Users\\chenxf\\Desktop\\BluemangooFiles\\server-1.16.5");
+					serverCoreTextField.setText("server");
+					serverVersionTextField.setText("1.16.5");
+					//debug using end
+
+
+
+
+
+					if(		serverPathTextField.getText().equals("")|| 
+							serverCoreTextField.getText().equals("")||
+							serverTypeComboBox.getSelect()==null||
+							serverVersionTextField.getText().equals("")){
+						return;
+					}
+					File dir = new File(serverPathTextField.getText());
+					if(!dir.exists()||!dir.isDirectory())
+					{
+						wrong.setText("无效的文件夹路径");
+						return;
+					}
+					File core = new File(serverPathTextField.getText()+File.separator+serverCoreTextField.getText());
+					File core_AddJar = new File(serverPathTextField.getText()+File.separator+serverCoreTextField.getText()+".jar");
+					boolean core1=!core.exists()||core.isDirectory();
+					boolean core2=!core_AddJar.exists()||core_AddJar.isDirectory();
+					if(core1&&core2){
+						wrong.setText("无效的文件名");
+						return;
+					}
+					theNewServer.setServerPath(serverPathTextField.getText());
+					if(!core1){
 						theNewServer.setCoreName(serverCoreTextField.getText());
-						theNewServer.setServerType(serverTypeComboBox.getSelect());
-						theNewServer.setServerVersion(serverVersionTextField.getText());
-						clear();
-						if(theNewServer.getServerType_Int()==ServerType_Int.VANILLA){
-							getChild().add(new Page_SetModInfo());
-						}
-						else{
-							//
-						}
+					}
+					else{
+						theNewServer.setCoreName(serverCoreTextField.getText()+".jar");
+					}
+					theNewServer.setServerType(serverTypeComboBox.getSelect());
+					theNewServer.setServerVersion(serverVersionTextField.getText());
+					clear();
+					if(theNewServer.getServerType_Int()==ServerType_Int.VANILLA){
+						getChild().add(new Page_SetModInfo());
+					}
+					else{
+						//
 					}
 				});
-				this.getChildren().addAll(choosePath,chooseServerCore,chooseServerType,chooseServerVersion);
-				this.getChildren().addAll(new EndSeparation(150),next);
+				this.getChildren().addAll(choosePath,chooseServerCore,chooseServerType,chooseServerVersion,wrong);
+				this.getChildren().addAll(new EndSeparation(180),next);
 
 			}
 		}
 		/**
 		 * 设置模组信息
-		 * 包括：
+		 * 包括：api与api路径
 		 */
 		class Page_SetModInfo extends VBox{
 			/**
 			 * 设置模组信息
-			 * 包括：
+			 * 包括：api与api路径
 			 */
 			public Page_SetModInfo(){
 				super(15);
@@ -556,47 +545,65 @@ public class Gui extends Application {
 				Label serverTypeWarn=new Label("若无请选择none");
 				chooseApi.getChildren().addAll(serverApiLabel,serverApiComboBox,serverTypeWarn);
 				HBox chooseApiCore=new HBox(15);
-//				chooseApiCore.setVisible(false);
+				chooseApiCore.setVisible(false);
 				Label serverApiCoreLabel=new Label();
 				serverApiCoreLabel.setPrefWidth(labelWidth);
 				TextField serverApiCoreTextField=new TextField();
 				serverApiCoreTextField.setPrefWidth(100);
 				chooseApiCore.getChildren().addAll(serverApiCoreLabel,serverApiCoreTextField);
-				serverApiComboBox.getSelectionModel().selectedItemProperty().addListener(new ChangeListener() {
-					@Override
-					public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-						if(newValue=="none"){
-//							chooseApiCore.setVisible(false);
-							serverApiCoreLabel.setText("");
-						}
-						if(newValue=="Forge"){
-//							chooseApiCore.setVisible(true);
-							serverApiCoreLabel.setText("Forge Api文件名");
-						}
-						if(newValue=="Fabric"){
-//							chooseApiCore.setVisible(true);
-							serverApiCoreLabel.setText("Fabric Api文件名");
-						}
-
+				serverApiComboBox.getSelectionModel().selectedItemProperty().addListener((ChangeListener) (observable, oldValue, newValue) -> {
+					if(newValue=="none"){
+						chooseApiCore.setVisible(false);
+						serverApiCoreLabel.setText("");
 					}
+					if(newValue=="Forge"){
+						chooseApiCore.setVisible(true);
+						serverApiCoreLabel.setText("Forge Api文件名");
+					}
+					if(newValue=="Fabric"){
+						chooseApiCore.setVisible(true);
+						serverApiCoreLabel.setText("Fabric Api文件名");
+					}
+
 				});
+
+				Label wrong=new Label();
+				wrong.setStyle("-fx-text-fill:red");
 
 				NextPage next=new NextPage();
-				next.nextPageButton.setOnAction(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						if(serverApiComboBox.getSelect()==null||((serverApiComboBox.getSelect()=="Forge"||serverApiComboBox.getSelect()=="Fabric")&& serverApiCoreTextField.getText().equals(""))){
+				next.nextPageButton.setOnAction(event -> {
+					if(serverApiComboBox.getSelect()==null){
+						return;
+					}
+					if(serverApiComboBox.getSelect().equals("Forge")||serverApiComboBox.getSelect().equals("Fabric")){
+						if(serverApiCoreTextField.getText().equals("")){
+							wrong.setText("请填写文件名");
 							return;
 						}
-//						theNewServer.setServerName(serverPathTextField.getText());
-//						theNewServer.setCoreName(serverCoreTextField.getText());
-//						theNewServer.setServerType(serverTypeComboBox.getSelect());
-//						theNewServer.setServerVersion(serverVersionTextField.getText());
-						clear();
+						File jarFile = new File(theNewServer.getServerPath()+File.separator+serverApiCoreTextField.getText());
+						File jarFile_AddJar = new File(theNewServer.getServerPath()+File.separator+serverApiCoreTextField.getText()+".jar");
+						boolean core1=!jarFile.exists()||jarFile.isDirectory();
+						boolean core2=!jarFile_AddJar.exists()||jarFile_AddJar.isDirectory();
+						if(core1&&core2){
+							wrong.setText("无效的文件名");
+							return;
+						}
+						if(!core1){
+							theNewServer.setApiName(serverApiCoreTextField.getText());
+						}
+						if(!core2){
+							theNewServer.setApiName(serverApiCoreTextField.getText()+".jar");
+						}
+						if(theNewServer.getApiName().equals(theNewServer.getCoreName())){
+							wrong.setText("无效的文件名");
+							return;
+						}
+						theNewServer.setApiType(serverApiComboBox.getSelect());
 					}
+					clear();
 				});
-				this.getChildren().addAll(chooseApi,chooseApiCore);
-				this.getChildren().addAll(new EndSeparation(72),next);
+				this.getChildren().addAll(chooseApi,chooseApiCore,wrong);
+				this.getChildren().addAll(new EndSeparation(102),next);
 
 			}
 		}
@@ -659,6 +666,7 @@ public class Gui extends Application {
 
 		theStage=primaryStage;
 
+		//TODO:debug settings here.
 		Server.serverList.add(new Server("ServerA"));
 		Server.serverList.add(new Server("ServerA"));
 //		Server.serverList.add(new Server("ServerA"));
@@ -721,21 +729,15 @@ public class Gui extends Application {
 		headButton_Close.setId("head");
 		headButton_Minimize.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/minimize.png", 12, 12, false, true)));
 		headButton_Close.setGraphic(new ImageView(new Image("/com/mcsl/resource/pic/close.png", 12, 12, false, true)));
-		headButton_Minimize.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				Stage stage = (Stage) headButton_Minimize.getScene().getWindow();
-				stage.setIconified(true);
-			}
+		headButton_Minimize.setOnAction(event -> {
+			Stage stage = (Stage) headButton_Minimize.getScene().getWindow();
+			stage.setIconified(true);
 		});
-		headButton_Close.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				Stage stage = (Stage) headButton_Close.getScene().getWindow();
-				stage.close();
-				//close server and work
-				Platform.exit();
-			}
+		headButton_Close.setOnAction(event -> {
+			Stage stage = (Stage) headButton_Close.getScene().getWindow();
+			stage.close();
+			//close server and work
+			Platform.exit();
 		});
 		headButton.getChildren().addAll(headButton_Minimize, headButton_Close);
 		head.getChildren().add(headButton);
@@ -781,68 +783,56 @@ public class Gui extends Application {
 		page.getChildren().clear();
 		page.getChildren().add(new StartPage());
 
-		menuButton_Start.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				setButtonType(menuButton_Start, true);
-				menuButton_Start.setGraphic(new ImageView(start_selected));
-				setButtonType(menuButton_Manage, false);
-				menuButton_Manage.setGraphic(new ImageView(manage_unselected));
-				setButtonType(menuButton_Run, false);
-				menuButton_Run.setGraphic(new ImageView(run_unselected));
-				setButtonType(menuButton_Settings, false);
-				menuButton_Settings.setGraphic(new ImageView(settings_unselected));
-				pageNow = "Start";
-				page.getChildren().clear();
-				page.getChildren().add(new StartPage());
+		menuButton_Start.setOnAction(event -> {
+			setButtonType(menuButton_Start, true);
+			menuButton_Start.setGraphic(new ImageView(start_selected));
+			setButtonType(menuButton_Manage, false);
+			menuButton_Manage.setGraphic(new ImageView(manage_unselected));
+			setButtonType(menuButton_Run, false);
+			menuButton_Run.setGraphic(new ImageView(run_unselected));
+			setButtonType(menuButton_Settings, false);
+			menuButton_Settings.setGraphic(new ImageView(settings_unselected));
+			pageNow = "Start";
+			page.getChildren().clear();
+			page.getChildren().add(new StartPage());
 
-			}
 		});
-		menuButton_Manage.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				setButtonType(menuButton_Manage, true);
-				menuButton_Manage.setGraphic(new ImageView(manage_selected));
-				setButtonType(menuButton_Start, false);
-				menuButton_Start.setGraphic(new ImageView(start_unselected));
-				setButtonType(menuButton_Run, false);
-				menuButton_Run.setGraphic(new ImageView(run_unselected));
-				setButtonType(menuButton_Settings, false);
-				menuButton_Settings.setGraphic(new ImageView(settings_unselected));
-				pageNow = "Manage";
-				page.getChildren().clear();
-				page.getChildren().add(new ManagePage());
-			}
+		menuButton_Manage.setOnAction(event -> {
+			setButtonType(menuButton_Manage, true);
+			menuButton_Manage.setGraphic(new ImageView(manage_selected));
+			setButtonType(menuButton_Start, false);
+			menuButton_Start.setGraphic(new ImageView(start_unselected));
+			setButtonType(menuButton_Run, false);
+			menuButton_Run.setGraphic(new ImageView(run_unselected));
+			setButtonType(menuButton_Settings, false);
+			menuButton_Settings.setGraphic(new ImageView(settings_unselected));
+			pageNow = "Manage";
+			page.getChildren().clear();
+			page.getChildren().add(new ManagePage());
 		});
-		menuButton_Run.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				setButtonType(menuButton_Run, true);
-				menuButton_Run.setGraphic(new ImageView(run_selected));
-				setButtonType(menuButton_Start, false);
-				menuButton_Start.setGraphic(new ImageView(start_unselected));
-				setButtonType(menuButton_Manage, false);
-				menuButton_Manage.setGraphic(new ImageView(manage_unselected));
-				setButtonType(menuButton_Settings, false);
-				menuButton_Settings.setGraphic(new ImageView(settings_unselected));
-				pageNow = "Run";
-				page.getChildren().clear();
-			}
+		menuButton_Run.setOnAction(event -> {
+			setButtonType(menuButton_Run, true);
+			menuButton_Run.setGraphic(new ImageView(run_selected));
+			setButtonType(menuButton_Start, false);
+			menuButton_Start.setGraphic(new ImageView(start_unselected));
+			setButtonType(menuButton_Manage, false);
+			menuButton_Manage.setGraphic(new ImageView(manage_unselected));
+			setButtonType(menuButton_Settings, false);
+			menuButton_Settings.setGraphic(new ImageView(settings_unselected));
+			pageNow = "Run";
+			page.getChildren().clear();
 		});
-		menuButton_Settings.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				setButtonType(menuButton_Settings, true);
-				menuButton_Settings.setGraphic(new ImageView(settings_selected));
-				setButtonType(menuButton_Start, false);
-				menuButton_Start.setGraphic(new ImageView(start_unselected));
-				setButtonType(menuButton_Manage, false);
-				menuButton_Manage.setGraphic(new ImageView(manage_unselected));
-				setButtonType(menuButton_Run, false);
-				menuButton_Run.setGraphic(new ImageView(run_unselected));
-				pageNow = "Settings";
-				page.getChildren().clear();
-			}
+		menuButton_Settings.setOnAction(event -> {
+			setButtonType(menuButton_Settings, true);
+			menuButton_Settings.setGraphic(new ImageView(settings_selected));
+			setButtonType(menuButton_Start, false);
+			menuButton_Start.setGraphic(new ImageView(start_unselected));
+			setButtonType(menuButton_Manage, false);
+			menuButton_Manage.setGraphic(new ImageView(manage_unselected));
+			setButtonType(menuButton_Run, false);
+			menuButton_Run.setGraphic(new ImageView(run_unselected));
+			pageNow = "Settings";
+			page.getChildren().clear();
 		});
 
 		menuBox.getChildren().addAll(menuButton_Start, menuButton_Manage, menuButton_Run, menuButton_Settings);
